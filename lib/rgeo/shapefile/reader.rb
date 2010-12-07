@@ -146,6 +146,12 @@ module RGeo
       # shapefile (".shp", ".idx", and ".dbf") must be present for
       # successful opening of a shapefile.
       # 
+      # You must also provide a RGeo::Feature::FactoryGenerator. It should
+      # understand the configuration options <tt>:has_z_coordinate</tt>
+      # and <tt>:has_m_coordinate</tt>. You may also pass a specific
+      # RGeo::Feature::Factory, or nil to specify the default Cartesian
+      # FactoryGenerator.
+      # 
       # If you provide a block, the shapefile reader will be yielded to
       # the block, and automatically closed at the end of the block.
       # If you do not provide a block, the shapefile reader will be
@@ -154,18 +160,14 @@ module RGeo
       # 
       # Options include:
       # 
-      # <tt>:default_factory</tt>::
-      #   The default factory for parsed geometries, used when no factory
-      #   generator is provided. If no default is provided either, the
-      #   default cartesian factory will be used as the default.
       # <tt>:factory_generator</tt>::
-      #   A factory generator that should return a factory based on the
-      #   srid and dimension settings in the input. The factory generator
-      #   should understand the configuration options
-      #   <tt>:has_z_coordinate</tt> and <tt>:has_m_coordinate</tt>.
-      #   See RGeo::Feature::FactoryGenerator for more information.
-      #   If no generator is provided, the <tt>:default_factory</tt> is
-      #   used.
+      #   A RGeo::Feature::FactoryGenerator that should return a factory
+      #   based on the dimension settings in the input. It should
+      #   understand the configuration options <tt>:has_z_coordinate</tt>
+      #   and <tt>:has_m_coordinate</tt>. You may also pass a specific
+      #   RGeo::Feature::Factory. If no factory generator is provided,
+      #   the default Cartesian factory generator is used. This option
+      #   can also be specified using the <tt>:factory</tt> key.
       # <tt>:srid</tt>::
       #   If provided, this option is passed to the factory generator.
       #   This is useful because shapefiles do not contain a SRID.
@@ -223,7 +225,11 @@ module RGeo
         @opened = true
         @main_file = ::File.open(path_+'.shp', 'rb:ascii-8bit')
         @index_file = ::File.open(path_+'.shx', 'rb:ascii-8bit')
-        @attr_dbf = defined?(::DBF) ? ::DBF::Table.new(path_+'.dbf') : nil
+        if defined?(::DBF) && ::File.file?(path_+'.dbf') && ::File.readable?(path_+'.dbf')
+          @attr_dbf = ::DBF::Table.new(path_+'.dbf')
+        else
+          @attr_dbf = nil
+        end
         @main_length, @shape_type_code, @xmin, @ymin, @xmax, @ymax, @zmin, @zmax, @mmin, @mmax = @main_file.read(100).unpack('x24Nx4VE8')
         @main_length *= 2
         index_length_ = @index_file.read(100).unpack('x24Nx72').first
@@ -248,8 +254,8 @@ module RGeo
           end
         end
         
-        factory_generator_ = opts_[:factory_generator]
-        if factory_generator_
+        @factory = opts_[:factory_generator] || opts_[:factory] || Cartesian.method(:preferred_factory)
+        unless @factory.kind_of?(Feature::Factory::Instance)
           factory_config_ = {}
           factory_config_[:srid] = opts_[:srid] if opts_[:srid]
           unless @zmin.nil?
@@ -258,9 +264,7 @@ module RGeo
           unless @mmin.nil?
             factory_config_[:has_m_coordinate] = true
           end
-          @factory = factory_generator_.call(factory_config_)
-        else
-          @factory = opts_[:default_factory] || Cartesian.preferred_factory
+          @factory = @factory.call(factory_config_)
         end
         @factory_supports_z = @factory.property(:has_z_coordinate)
         @factory_supports_m = @factory.property(:has_m_coordinate)
@@ -318,7 +322,7 @@ module RGeo
       # Returns the shape type code.
       
       def shape_type_code
-        @shape_type_code
+        @opened ? @shape_type_code : nil
       end
       
       
@@ -390,7 +394,7 @@ module RGeo
       # Read and return the next record as a Reader::Record.
       
       def next
-        @cur_record_index < @num_records ? _read_next_record : nil
+        @opened && @cur_record_index < @num_records ? _read_next_record : nil
       end
       
       
@@ -400,14 +404,14 @@ module RGeo
       def each
         while @cur_record_index < @num_records
           yield _read_next_record
-        end
+        end if @opened
       end
       
       
       # Seek to the given record index.
       
       def seek_index(index_)
-        if index_ >= 0 && index_ <= @num_records
+        if @opened && index_ >= 0 && index_ <= @num_records
           if index_ < @num_records && index_ != @cur_record_index
             @index_file.seek(100+8*index_)
             offset_ = @index_file.read(4).unpack('N').first

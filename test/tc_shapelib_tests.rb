@@ -45,7 +45,7 @@ module RGeo
       class TestShapelibTests < ::Test::Unit::TestCase  # :nodoc:
         
         def _open_shapefile(name_, &block_)
-          RGeo::Shapefile::Reader.open(::File.expand_path("shapelib_testcases/#{name_}", ::File.dirname(__FILE__)), :factory_generator => ::RGeo::Cartesian.method(:simple_factory), &block_)
+          RGeo::Shapefile::Reader.open(::File.expand_path("shapelib_testcases/#{name_}", ::File.dirname(__FILE__)), &block_)
         end
         
         

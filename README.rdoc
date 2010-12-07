@@ -70,7 +70,7 @@ Contact the author at dazuma at gmail dot com.
 
 RGeo is written by Daniel Azuma (http://www.daniel-azuma.com).
 
-Development of RGeo::Shapefile is sponsored by GeoPage, Inc. (http://www.geopage.com).
+Development of RGeo is sponsored by GeoPage, Inc. (http://www.geopage.com).
 
 Although we don't use shapelib (http://shapelib.maptools.org) to read
 ESRI shapefiles, we did borrow a bunch of their test cases.

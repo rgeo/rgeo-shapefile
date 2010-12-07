@@ -71,7 +71,7 @@ module RAKEFILE
   EXTRA_RDOC_FILES = ::Dir.glob('*.rdoc')
   ALL_RDOC_FILES = SOURCE_FILES + EXTRA_RDOC_FILES
   MAIN_RDOC_FILE = 'README.rdoc'
-  RDOC_TITLE = "RGeo::Shpaefile #{PRODUCT_VERSION} Documentation"
+  RDOC_TITLE = "RGeo::Shapefile #{PRODUCT_VERSION} Documentation"
   
   TESTCASE_FILES = ::Dir.glob('test/**/tc_*.rb')
   ALL_TEST_FILES = ::Dir.glob('test/**/*.{rb,txt,shp,shx,dbf}')
@@ -100,6 +100,7 @@ module RAKEFILE
     s_.platform = ::Gem::Platform::RUBY
     s_.extensions = ::Dir.glob('ext/**/extconf.rb')
     s_.add_dependency('rgeo', '>= 0.2.0')
+    s_.add_development_dependency('dbf', '>= 1.5.2')
   end
   
 end
