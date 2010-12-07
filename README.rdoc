@@ -1,7 +1,7 @@
 == RGeo::Shapefile
 
 RGeo::Shapefile is an optional module for RGeo for reading geospatial data
-from the ESRI shapefile format.
+from ESRI shapefiles.
 
 === Summary
 
@@ -12,10 +12,10 @@ representations of geometric objects such as points, lines, and polygons,
 along with a set of geometric analysis operations. See the README for the
 "rgeo" gem for more information.
 
-RGeo::Shapefile is an optional module for RGeo for reading geospatial data
-from the ESRI shapefile format. Shapefile is a common file format for
-geospatial data sets. It is defined in this
-{ESRI whitepaper}[http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf].
+RGeo::Shapefile is an optional RGeo add-on module for reading geospatial
+data from ESRI shapefiles. The shapefile format is a common file format
+for geospatial data sets. It is specified in
+{this ESRI whitepaper}[http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf].
 
 Example:
 
@@ -37,8 +37,8 @@ Example:
 
 RGeo::Shapefile has the following requirements:
 
-* RGeo 0.2.0 or later.
 * Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.
+* RGeo 0.2.0 or later.
 * The "dbf" gem, version 1.5.2 or later, is recommended. This gem is
   needed to read the attributes file. If it is not present, shapefiles
   can still be read, but attributes will not be available.
@@ -48,19 +48,21 @@ Install RGeo::Shapefile as a gem:
  gem install rgeo
  gem install rgeo-shapefile
 
-See the README for the required "rgeo" gem for further installation
-information.
+See the README for the "rgeo" gem, a required dependency, for further
+installation information.
 
-=== Limitations/bugs
+=== To-do list
 
-* RGeo::Shapefile does not yet support writing shapefiles.
-* Basic use cases are tested and known to work, but test coverage of the more complex cases is minimal.
+* Improve test case coverage.
+* Support for writing shapefiles.
 
 === Development and support
 
 Documentation is available at http://virtuoso.rubyforge.org/rgeo-shapefile/README_rdoc.html
 
 Source code is hosted on Github at http://github.com/dazuma/rgeo-shapefile
+
+Contributions are welcome. Fork the project on Github.
 
 Report bugs on Github issues at http://github.org/dazuma/rgeo-shapefile/issues
 
