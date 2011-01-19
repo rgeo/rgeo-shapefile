@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # 
-# Shapefile processing for RGeo
+# Version of rgeo-shapefile
 # 
 # -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
@@ -34,30 +34,23 @@
 ;
 
 
-# Dependencies
-require 'rgeo'
-
-
-# RGeo is a spatial data library for Ruby, provided by the "rgeo" gem.
-# 
-# The optional RGeo::Shapefile module provides a set of tools for reading
-# ESRI shapefiles.
-
-module RGeo
-  
-  
-  # This module contains an implementation of ESRI Shapefiles.
-  # Use the Shapefile::Reader class to read a shapefile, extracting
-  # geometry and attribute data from it.
-  # RGeo does not yet have support for writing shapefiles.
-  
-  module Shapefile
-  end
-  
-  
+begin
+  require 'versionomy'
+rescue ::LoadError
 end
 
 
-# Implementation files
-require 'rgeo/shapefile/version'
-require 'rgeo/shapefile/reader'
+module RGeo
+  
+  module Shapefile
+    
+    # Current version of RGeo::Shapefile as a frozen string
+    VERSION_STRING = ::File.read(::File.dirname(__FILE__)+'/../../../Version').strip.freeze
+    
+    # Current version of RGeo::Shapefile as a Versionomy object, if the
+    # Versionomy gem is available; otherwise equal to VERSION_STRING.
+    VERSION = defined?(::Versionomy) ? ::Versionomy.parse(VERSION_STRING) : VERSION_STRING
+    
+  end
+  
+end

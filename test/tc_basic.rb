@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # 
-# Shapefile processing for RGeo
+# Some shapefile reading test cases borrowed from shapelib
 # 
 # -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
@@ -34,30 +34,24 @@
 ;
 
 
-# Dependencies
-require 'rgeo'
+require 'test/unit'
+require 'rgeo/shapefile'
 
-
-# RGeo is a spatial data library for Ruby, provided by the "rgeo" gem.
-# 
-# The optional RGeo::Shapefile module provides a set of tools for reading
-# ESRI shapefiles.
 
 module RGeo
-  
-  
-  # This module contains an implementation of ESRI Shapefiles.
-  # Use the Shapefile::Reader class to read a shapefile, extracting
-  # geometry and attribute data from it.
-  # RGeo does not yet have support for writing shapefiles.
-  
   module Shapefile
+    module Tests  # :nodoc:
+      
+      class TestBasic < ::Test::Unit::TestCase  # :nodoc:
+        
+        
+        def test_has_version
+          assert_not_nil(::RGeo::Shapefile::VERSION)
+        end
+        
+        
+      end
+      
+    end
   end
-  
-  
 end
-
-
-# Implementation files
-require 'rgeo/shapefile/version'
-require 'rgeo/shapefile/reader'
