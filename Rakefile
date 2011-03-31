@@ -62,7 +62,7 @@ module RAKEFILE
   PRODUCT_SUMMARY = "An RGeo module for reading ESRI shapefiles."
   PRODUCT_DESCRIPTION = "RGeo is a geospatial data library for Ruby. RGeo::Shapefile is an optional RGeo module for reading the ESRI shapefile format, a common file format for geospatial datasets."
   
-  DEPENDENCIES = [['rgeo', '>= 0.2.0']]
+  DEPENDENCIES = [['rgeo', '>= 0.2.6']]
   DEVELOPMENT_DEPENDENCIES = [['dbf', '>= 1.5.2']]
   
 end
@@ -173,14 +173,14 @@ file "#{::RAKEFILE::DOC_DIRECTORY}/index.html" => ::RAKEFILE::ALL_RDOC_FILES do
   args_ << '--title' << ::RAKEFILE::RDOC_TITLE
   args_ << '-f' << 'darkfish'
   args_ << '--verbose' if ::ENV['VERBOSE']
-  require 'rdoc'
+  gem 'rdoc'
   require 'rdoc/rdoc'
-  require 'rdoc/generator/darkfish'
   ::RDoc::RDoc.new.document(args_ + ::RAKEFILE::ALL_RDOC_FILES)
 end
 
 
 task :publish_rdoc => :build_rdoc do
+  require 'yaml'
   config_ = ::YAML.load(::File.read(::File.expand_path("~/.rubyforge/user-config.yml")))
   username_ = config_['username']
   sh "rsync -av --delete #{::RAKEFILE::DOC_DIRECTORY}/ #{username_}@rubyforge.org:/var/www/gforge-projects/#{::RAKEFILE::RUBYFORGE_PROJECT}/#{::RAKEFILE::PRODUCT_NAME}"

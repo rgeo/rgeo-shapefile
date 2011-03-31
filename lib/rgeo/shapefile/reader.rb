@@ -160,7 +160,7 @@ module RGeo
       # 
       # Options include:
       # 
-      # <tt>:factory_generator</tt>::
+      # [<tt>:factory_generator</tt>]
       #   A RGeo::Feature::FactoryGenerator that should return a factory
       #   based on the dimension settings in the input. It should
       #   understand the configuration options <tt>:has_z_coordinate</tt>
@@ -168,10 +168,10 @@ module RGeo
       #   RGeo::Feature::Factory. If no factory generator is provided,
       #   the default Cartesian factory generator is used. This option
       #   can also be specified using the <tt>:factory</tt> key.
-      # <tt>:srid</tt>::
+      # [<tt>:srid</tt>]
       #   If provided, this option is passed to the factory generator.
       #   This is useful because shapefiles do not contain a SRID.
-      # <tt>:assume_inner_follows_outer</tt>::
+      # [<tt>:assume_inner_follows_outer</tt>]
       #   If set to true, some assumptions are made about ring ordering
       #   in a polygon shapefile. See below for details. Default is false.
       # 
@@ -463,9 +463,13 @@ module RGeo
           when 31 then _read_multipatch(data_)
           else nil
           end
-        dbf_record_ = @attr_dbf ? @attr_dbf.record(@cur_record_index) : nil
         attrs_ = {}
-        attrs_.merge!(dbf_record_.attributes) if dbf_record_
+        if @attr_dbf
+          dbf_record_ = @attr_dbf.record(@cur_record_index)
+          @attr_dbf.columns.each do |col_|
+            attrs_[col_.name] = dbf_record_.send(col_.underscored_name)
+          end
+        end
         result_ = Record.new(@cur_record_index, geometry_, attrs_)
         @cur_record_index += 1
         result_

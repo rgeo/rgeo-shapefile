@@ -1,6 +1,7 @@
-=== 0.2.1 / 2011-01-19
+=== 0.2.1 / 2011-03-31
 
 * The gem version is now accessible via an api.
+* Attributes were each listed twice under slightly different names. Fixed. (Reported by spara.)
 
 === 0.2.0 / 2010-12-07
 
