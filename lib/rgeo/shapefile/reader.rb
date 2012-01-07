@@ -1,15 +1,15 @@
 # -----------------------------------------------------------------------------
-# 
+#
 # Shapefile reader for RGeo
-# 
+#
 # -----------------------------------------------------------------------------
-# Copyright 2010 Daniel Azuma
-# 
+# Copyright 2010-2012 Daniel Azuma
+#
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice,
 #   this list of conditions and the following disclaimer.
 # * Redistributions in binary form must reproduce the above copyright notice,
@@ -18,7 +18,7 @@
 # * Neither the name of the copyright holder, nor the names of any other
 #   contributors to this software, may be used to endorse or promote products
 #   derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -41,28 +41,28 @@ end
 
 
 module RGeo
-  
+
   module Shapefile
-    
-    
+
+
     # Represents a shapefile that is open for reading.
-    # 
+    #
     # You can use this object to read a shapefile straight through,
     # yielding the data in a block; or you can perform random access
     # reads of indexed records.
-    # 
+    #
     # You must close this object after you are done, in order to close
     # the underlying files. Alternatively, you can pass a block to
     # Reader::open, and the reader will be closed automatically for
     # you at the end of the block.
-    # 
+    #
     # === Dependencies
-    # 
+    #
     # Attributes in shapefiles are stored in a ".dbf" (dBASE) format
     # file. The "dbf" gem is required to read these files. If this
     # gem is not installed, shapefile reading will still function,
     # but attributes will not be available.
-    # 
+    #
     # Correct interpretation of the polygon shape type requires some
     # functionality that is available in the RGeo::Geos module. Hence,
     # reading a polygon shapefile will generally fail if that module is
@@ -70,13 +70,13 @@ module RGeo
     # to bypass this requirement by relaxing the polygon tests and making
     # some assumptions about the file format. See the documentation for
     # Reader::open for details.
-    # 
+    #
     # === Shapefile support
-    # 
+    #
     # This class supports shapefiles formatted according to the 1998
     # "ESRI Shapefile Technical Description". It converts shapefile
     # data to RGeo geometry objects, as follows:
-    # 
+    #
     # * Shapefile records are represented by the
     #   RGeo::Shapefile::Reader::Record class, which provides the
     #   geometry, the attributes, and the record number (0-based).
@@ -96,9 +96,9 @@ module RGeo
     # * The multipatch shape type yields GeometryCollection geometries.
     #   (See below for an explanation of why we do not return a
     #   MultiPolygon.)
-    # 
+    #
     # Some special notes and limitations in our shapefile support:
-    # 
+    #
     # * Our implementation assumes that shapefile data is in a Cartesian
     #   coordinate system when it performs certain computations, such as
     #   directionality of polygon rings. It also ignores the 180 degree
@@ -131,35 +131,35 @@ module RGeo
     #   assertions, which do not allow constituent polygons to share a
     #   common boundary. Therefore, when reading a multipatch, we return
     #   a GeometryCollection instead of a MultiPolygon.
-    
+
     class Reader
-      
-      
+
+
       # Values less than this value are considered "no value" in the
       # shapefile format specification.
       NODATA_LIMIT = -1e38
-      
-      
+
+
       # Create a new shapefile reader. You must pass the path for the
       # main shapefile (e.g. "path/to/file.shp"). You may also omit the
       # ".shp" extension from the path. All three files that make up the
-      # shapefile (".shp", ".idx", and ".dbf") must be present for
+      # shapefile (".shp", ".shx", and ".dbf") must be present for
       # successful opening of a shapefile.
-      # 
+      #
       # You must also provide a RGeo::Feature::FactoryGenerator. It should
       # understand the configuration options <tt>:has_z_coordinate</tt>
       # and <tt>:has_m_coordinate</tt>. You may also pass a specific
       # RGeo::Feature::Factory, or nil to specify the default Cartesian
       # FactoryGenerator.
-      # 
+      #
       # If you provide a block, the shapefile reader will be yielded to
       # the block, and automatically closed at the end of the block.
       # If you do not provide a block, the shapefile reader will be
       # returned from this call. It is then the caller's responsibility
       # to close the reader when it is done.
-      # 
+      #
       # Options include:
-      # 
+      #
       # [<tt>:factory_generator</tt>]
       #   A RGeo::Feature::FactoryGenerator that should return a factory
       #   based on the dimension settings in the input. It should
@@ -174,9 +174,9 @@ module RGeo
       # [<tt>:assume_inner_follows_outer</tt>]
       #   If set to true, some assumptions are made about ring ordering
       #   in a polygon shapefile. See below for details. Default is false.
-      # 
+      #
       # === Ring ordering in polygon shapefiles
-      # 
+      #
       # The ESRI polygon shape type specifies that the ordering of rings
       # in the shapefile is not significant. That is, rings can be in any
       # order, and inner rings need not necessarily follow the outer ring
@@ -185,7 +185,7 @@ module RGeo
       # it becomes necessary to run some geometric analysis on the rings
       # that are read in, in order to determine which inner rings should
       # go with which outer rings.
-      # 
+      #
       # RGeo's shapefile reader uses GEOS to perform this analysis.
       # However, this means that if GEOS is not available, the analysis
       # will fail. It also means reading polygons may be slow, especially
@@ -199,7 +199,7 @@ module RGeo
       # is not turned on by default. However, if you are running RGeo on
       # a platform without GEOS, you have no choice but to turn on this
       # switch and make this assumption about your input shapefiles.
-      
+
       def self.open(path_, opts_={}, &block_)
         file_ = new(path_, opts_)
         if block_
@@ -213,14 +213,14 @@ module RGeo
           file_
         end
       end
-      
-      
+
+
       # Low-level creation of a Reader. The arguments are the same as
       # those passed to Reader::open, except that this doesn't take a
       # block. You should use Reader::open instead.
-      
+
       def initialize(path_, opts_={})  # :nodoc:
-        path_.sub!(/\.shp$/, '')
+        path_ = path_.sub(/\.shp$/, '')
         @base_path = path_
         @opened = true
         @main_file = ::File.open(path_+'.shp', 'rb:ascii-8bit')
@@ -235,7 +235,7 @@ module RGeo
         index_length_ = @index_file.read(100).unpack('x24Nx72').first
         @num_records = (index_length_ - 50) / 4
         @cur_record_index = 0
-        
+
         if @num_records == 0
           @xmin = @xmax = @ymin = @ymax = @zmin = @zmax = @mmin = @mmax = nil
         else
@@ -253,7 +253,7 @@ module RGeo
             @mmin = @mmax = @zmin = @zmax = nil
           end
         end
-        
+
         @factory = opts_[:factory_generator] || opts_[:factory] || Cartesian.method(:preferred_factory)
         unless @factory.kind_of?(Feature::Factory::Instance)
           factory_config_ = {}
@@ -268,15 +268,15 @@ module RGeo
         end
         @factory_supports_z = @factory.property(:has_z_coordinate)
         @factory_supports_m = @factory.property(:has_m_coordinate)
-        
+
         @assume_inner_follows_outer = opts_[:assume_inner_follows_outer]
       end
-      
-      
+
+
       # Close the shapefile.
       # You should not use this Reader after it has been closed.
       # Most methods will return nil.
-      
+
       def close
         if @opened
           @main_file.close
@@ -285,131 +285,131 @@ module RGeo
           @opened = false
         end
       end
-      
-      
+
+
       # Returns true if this Reader is still open, or false if it has
       # been closed.
-      
+
       def open?
         @opened
       end
-      
-      
+
+
       # Returns true if attributes are available. This may be false
       # because there is no ".dbf" file or because the dbf gem is not
       # available.
-      
+
       def attributes_available?
         @opened ? (@attr_dbf ? true : false) : nil
       end
-      
-      
+
+
       # Returns the factory used by this reader.
-      
+
       def factory
         @opened ? @factory : nil
       end
-      
-      
+
+
       # Returns the number of records in the shapefile.
-      
+
       def num_records
         @opened ? @num_records : nil
       end
       alias_method :size, :num_records
-      
-      
+
+
       # Returns the shape type code.
-      
+
       def shape_type_code
         @opened ? @shape_type_code : nil
       end
-      
-      
+
+
       # Returns the minimum x.
-      
+
       def xmin
         @opened ? @xmin : nil
       end
-      
-      
+
+
       # Returns the maximum x.
-      
+
       def xmax
         @opened ? @xmax : nil
       end
-      
-      
+
+
       # Returns the minimum y.
-      
+
       def ymin
         @opened ? @ymin : nil
       end
-      
-      
+
+
       # Returns the maximum y.
-      
+
       def ymax
         @opened ? @ymax : nil
       end
-      
-      
+
+
       # Returns the minimum z, or nil if the shapefile does not contain z.
-      
+
       def zmin
         @opened ? @zmin : nil
       end
-      
-      
+
+
       # Returns the maximum z, or nil if the shapefile does not contain z.
-      
+
       def zmax
         @opened ? @zmax : nil
       end
-      
-      
+
+
       # Returns the minimum m, or nil if the shapefile does not contain m.
-      
+
       def mmin
         @opened ? @mmin : nil
       end
-      
-      
+
+
       # Returns the maximum m, or nil if the shapefile does not contain m.
-      
+
       def mmax
         @opened ? @mmax : nil
       end
-      
-      
+
+
       # Returns the current file pointer as a record index (0-based).
       # This is the record number that will be read when Reader#next
       # is called.
-      
+
       def cur_index
         @opened ? @cur_record_index : nil
       end
-      
-      
+
+
       # Read and return the next record as a Reader::Record.
-      
+
       def next
         @opened && @cur_record_index < @num_records ? _read_next_record : nil
       end
-      
-      
+
+
       # Read the remaining records starting with the current record index,
       # and yield the Reader::Record for each one.
-      
+
       def each
         while @cur_record_index < @num_records
           yield _read_next_record
         end if @opened
       end
-      
-      
+
+
       # Seek to the given record index.
-      
+
       def seek_index(index_)
         if @opened && index_ >= 0 && index_ <= @num_records
           if index_ < @num_records && index_ != @cur_record_index
@@ -423,25 +423,25 @@ module RGeo
           false
         end
       end
-      
-      
+
+
       # Rewind to the beginning of the file.
       # Equivalent to seek_index(0).
-      
+
       def rewind
         seek_index(0)
       end
-      
-      
+
+
       # Get the given record number. Equivalent to seeking to that index
       # and calling next.
-      
+
       def get(index_)
         seek_index(index_) ? self.next : nil
       end
       alias_method :[], :get
-      
-      
+
+
       def _read_next_record  # :nodoc:
         num_, length_ = @main_file.read(8).unpack('NN')
         data_ = @main_file.read(length_ * 2)
@@ -474,8 +474,8 @@ module RGeo
         @cur_record_index += 1
         result_
       end
-      
-      
+
+
       def _read_point(data_, opt_=nil)  # :nodoc:
         case opt_
         when :z
@@ -493,18 +493,18 @@ module RGeo
         extras_ << m_ if @factory_supports_m
         @factory.point(x_, y_, *extras_)
       end
-      
-      
+
+
       def _read_multipoint(data_, opt_=nil)  # :nodoc:
         # Read number of points
         num_points_ = data_[36,4].unpack('V').first
-        
+
         # Read remaining data
         size_ = num_points_*16
         size_ += 16 + num_points_*8 if opt_
         size_ += 16 + num_points_*8 if opt_ == :z
         values_ = data_[40, size_].unpack('E*')
-        
+
         # Extract XY, Z, and M values
         xys_ = values_.slice!(0, num_points_*2)
         ms_ = nil
@@ -517,7 +517,7 @@ module RGeo
             ms_.map!{ |val_| val_ < NODATA_LIMIT ? 0 : val_ } if ms_
           end
         end
-        
+
         # Generate points
         points_ = (0..num_points_-1).map do |i_|
           extras_ = []
@@ -529,21 +529,21 @@ module RGeo
         # Return a MultiPoint
         @factory.multi_point(points_)
       end
-      
-      
+
+
       def _read_polyline(data_, opt_=nil)  # :nodoc:
         # Read counts
         num_parts_, num_points_ = data_[36,8].unpack('VV')
-        
+
         # Read remaining data
         size_ = num_parts_*4 + num_points_*16
         size_ += 16 + num_points_*8 if opt_
         size_ += 16 + num_points_*8 if opt_ == :z
         values_ = data_[44, size_].unpack("V#{num_parts_}E*")
-        
+
         # Parts array
         part_indexes_ = values_.slice!(0, num_parts_) + [num_points_]
-        
+
         # Extract XY, Z, and M values
         xys_ = values_.slice!(0, num_points_*2)
         ms_ = nil
@@ -556,7 +556,7 @@ module RGeo
             ms_.map!{ |val_| val_ < NODATA_LIMIT ? 0 : val_ }
           end
         end
-        
+
         # Generate points
         points_ = (0..num_points_-1).map do |i_|
           extras_ = []
@@ -564,30 +564,30 @@ module RGeo
           extras_ << ms_[i_] if ms_ && @factory_supports_m
           @factory.point(xys_[i_*2], xys_[i_*2+1], *extras_)
         end
-        
+
         # Generate LineString objects (parts)
         parts_ = (0..num_parts_-1).map do |i_|
           @factory.line_string(points_[part_indexes_[i_]...part_indexes_[i_+1]])
         end
-        
+
         # Generate MultiLineString
         @factory.multi_line_string(parts_)
       end
-      
-      
+
+
       def _read_polygon(data_, opt_=nil)  # :nodoc:
         # Read counts
         num_parts_, num_points_ = data_[36,8].unpack('VV')
-        
+
         # Read remaining data
         size_ = num_parts_*4 + num_points_*16
         size_ += 16 + num_points_*8 if opt_
         size_ += 16 + num_points_*8 if opt_ == :z
         values_ = data_[44, size_].unpack("V#{num_parts_}E*")
-        
+
         # Parts array
         part_indexes_ = values_.slice!(0, num_parts_) + [num_points_]
-        
+
         # Extract XY, Z, and M values
         xys_ = values_.slice!(0, num_points_*2)
         ms_ = nil
@@ -600,7 +600,7 @@ module RGeo
             ms_.map!{ |val_| val_ < NODATA_LIMIT ? 0 : val_ } if ms_
           end
         end
-        
+
         # Generate points
         points_ = (0..num_points_-1).map do |i_|
           extras_ = []
@@ -608,12 +608,12 @@ module RGeo
           extras_ << ms_[i_] if ms_ && @factory_supports_m
           @factory.point(xys_[i_*2], xys_[i_*2+1], *extras_)
         end
-        
+
         # The parts are LinearRing objects
         parts_ = (0..num_parts_-1).map do |i_|
           @factory.linear_ring(points_[part_indexes_[i_]...part_indexes_[i_+1]])
         end
-        
+
         # Get a GEOS factory if needed.
         geos_factory_ = nil
         unless @assume_inner_follows_outer
@@ -622,7 +622,7 @@ module RGeo
             raise Error::RGeoError, "GEOS is not available, but is required for correct interpretation of polygons in shapefiles."
           end
         end
-        
+
         # Special case: if there's only one part, treat it as an outer
         # ring, regardless of its direction. This isn't strictly compliant
         # with the shapefile spec, but the shapelib test cases seem to
@@ -630,14 +630,14 @@ module RGeo
         if parts_.size == 1
           return @factory.multi_polygon([@factory.polygon(parts_[0])])
         end
-        
+
         # Collect some data on the rings: the ring direction, a GEOS
         # polygon (for intersection calculation), and an initial guess
         # of which polygon index the ring belongs to.
         parts_.map! do |ring_|
           [ring_, Cartesian::Analysis.ring_direction(ring_) < 0, geos_factory_ ? geos_factory_.polygon(ring_) : nil, nil]
         end
-        
+
         # Initial population of the polygon data array.
         # Each element is an array of the part data for the rings, first
         # the outer ring and then the inner rings.
@@ -653,7 +653,7 @@ module RGeo
           end
           part_data_[3] = polygons_.size - 1
         end
-        
+
         # If :assume_inner_follows_outer is in effect, we assume this
         # initial guess is the correct one, and we don't run the
         # potentially expensive intersection tests.
@@ -704,37 +704,37 @@ module RGeo
             end
           end
         end
-        
+
         # Generate the actual polygons from the collected polygon data
         polygons_.map! do |poly_data_|
           outer_ = poly_data_[0][0]
           inner_ = poly_data_[1..-1].map{ |part_data_| part_data_[0] }
           @factory.polygon(outer_, inner_)
         end
-        
+
         # Finally, return the MultiPolygon.
         @factory.multi_polygon(polygons_)
       end
-      
-      
+
+
       def _read_multipatch(data_)  # :nodoc:
         # Read counts
         num_parts_, num_points_ = data_[36,8].unpack('VV')
-        
+
         # Read remaining data
         values_ = data_[44, 32 + num_parts_*8 + num_points_*32].unpack("V#{num_parts_*2}E*")
-        
+
         # Parts arrays
         part_indexes_ = values_.slice!(0, num_parts_) + [num_points_]
         part_types_ = values_.slice!(0, num_parts_)
-        
+
         # Extract XY, Z, and M values
         xys_ = values_.slice!(0, num_points_*2)
         zs_ = values_.slice!(2, num_points_)
         zs_.map!{ |val_| val_ < NODATA_LIMIT ? 0 : val_ } if zs_
         ms_ = values_.slice!(4, num_points_)
         ms_.map!{ |val_| val_ < NODATA_LIMIT ? 0 : val_ } if ms_
-        
+
         # Generate points
         points_ = (0..num_points_-1).map do |i_|
           extras_ = []
@@ -742,7 +742,7 @@ module RGeo
           extras_ << ms_[i_] if ms_ && @factory_supports_m
           @factory.point(xys_[i_*2], xys_[i_*2+1], *extras_)
         end
-        
+
         # Create the parts
         parts_ = (0..num_parts_-1).map do |i_|
           ps_ = points_[part_indexes_[i_]...part_indexes_[i_+1]]
@@ -765,7 +765,7 @@ module RGeo
           end
           @factory.linear_ring(ps_)
         end
-        
+
         # Get a GEOS factory if needed.
         geos_factory_ = nil
         unless @assume_inner_follows_outer
@@ -774,7 +774,7 @@ module RGeo
             raise Error::RGeoError, "GEOS is not available, but is required for correct interpretation of polygons in shapefiles."
           end
         end
-        
+
         # Walk the parts and generate polygons
         polygons_ = []
         state_ = :empty
@@ -785,7 +785,7 @@ module RGeo
         (0..num_parts_).each do |index_|
           part_ = parts_[index_]
           type_ = part_types_[index_]
-          
+
           # This section handles any state.
           # It either stays in the state and goes to the next part,
           # or it wraps up the state. Either way, at the end of this
@@ -839,7 +839,7 @@ module RGeo
               sequence_ = []
             end
           end
-          
+
           # State is now :empty. We allow any type except 3 (since an
           # (inner must come during an outer-led sequence).
           # We treat a type 5 ring that isn't part of a first-led sequence
@@ -855,52 +855,52 @@ module RGeo
             state_ = :first
           end
         end
-        
+
         # Return the geometry as a collection.
         @factory.collection(polygons_)
       end
-      
-      
+
+
       # Shapefile records are provided to the caller as objects of this
       # type. The record includes the record index (0-based), the
       # geometry (which may be nil if the shape type is the null type),
       # and a hash of attributes from the associated dbf file.
-      # 
+      #
       # You should not need to create objects of this type yourself.
-      
+
       class Record
-        
+
         def initialize(index_, geometry_, attributes_)  # :nodoc:
           @index = index_
           @geometry = geometry_
           @attributes = attributes_
         end
-        
+
         # The 0-based record number
         attr_reader :index
-        
+
         # The geometry contained in this shapefile record
         attr_reader :geometry
-        
+
         # The attributes as a hash.
         attr_reader :attributes
-        
+
         # Returns an array of keys for all this record's attributes.
         def keys
           @attributes.keys
         end
-        
+
         # Returns the value for the given attribute key.
         def [](key_)
           @attributes[key_]
         end
-        
+
       end
-      
-      
+
+
     end
-    
-    
+
+
   end
-  
+
 end

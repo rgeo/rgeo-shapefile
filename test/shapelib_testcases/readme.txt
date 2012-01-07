@@ -8,4 +8,4 @@ makeshape.sh script. Both were run from shapelib release 1.3.0b2.
 
 Since we're embedding the test cases themselves here in this
 directory, we note that they are Copyright 1999 Frank Warmerdam,
-and are distrubted under an MIT style license.
+and are distributed under an MIT style license.

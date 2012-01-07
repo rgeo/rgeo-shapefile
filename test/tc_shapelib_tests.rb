@@ -1,15 +1,15 @@
 # -----------------------------------------------------------------------------
-# 
+#
 # Some shapefile reading test cases borrowed from shapelib
-# 
+#
 # -----------------------------------------------------------------------------
-# Copyright 2010 Daniel Azuma
-# 
+# Copyright 2010-2012 Daniel Azuma
+#
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice,
 #   this list of conditions and the following disclaimer.
 # * Redistributions in binary form must reproduce the above copyright notice,
@@ -18,7 +18,7 @@
 # * Neither the name of the copyright holder, nor the names of any other
 #   contributors to this software, may be used to endorse or promote products
 #   derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -41,14 +41,14 @@ require 'rgeo/shapefile'
 module RGeo
   module Shapefile
     module Tests  # :nodoc:
-      
+
       class TestShapelibTests < ::Test::Unit::TestCase  # :nodoc:
-        
+
         def _open_shapefile(name_, &block_)
           RGeo::Shapefile::Reader.open(::File.expand_path("shapelib_testcases/#{name_}", ::File.dirname(__FILE__)), &block_)
         end
-        
-        
+
+
         def test_rewind
           _open_shapefile('test') do |file_|
             assert_equal(0, file_.cur_index)
@@ -63,8 +63,8 @@ module RGeo
             assert_equal(1, rec_.geometry[0].num_interior_rings)
           end
         end
-        
-        
+
+
         def test_seek
           _open_shapefile('test') do |file_|
             assert_equal(0, file_.cur_index)
@@ -86,8 +86,8 @@ module RGeo
             assert_equal(1, rec_.geometry[0].num_interior_rings)
           end
         end
-        
-        
+
+
         def test_attributes
           _open_shapefile('test') do |file_|
             rec_ = file_.next
@@ -105,8 +105,8 @@ module RGeo
             assert_equal(0, rec_['TestDouble'])
           end
         end
-        
-        
+
+
         def test_test0
           _open_shapefile('test0') do |file_|
             assert_equal(0, file_.shape_type_code)
@@ -120,8 +120,8 @@ module RGeo
             assert_nil(file_.next)
           end
         end
-        
-        
+
+
         def _test_point_shapefile(filename_, has_z_, has_m_)
           _open_shapefile(filename_) do |file_|
             assert_equal(has_z_ ? 11 : has_m_ ? 21 : 1, file_.shape_type_code)
@@ -145,23 +145,23 @@ module RGeo
             assert_nil(file_.next)
           end
         end
-        
-        
+
+
         def test_test1
           _test_point_shapefile('test1', false, false)
         end
-        
-        
+
+
         def test_test2
           _test_point_shapefile('test2', true, true)
         end
-        
-        
+
+
         def test_test3
           _test_point_shapefile('test3', false, true)
         end
-        
-        
+
+
         def _test_multipoint_shapefile(filename_, has_z_, has_m_)
           _open_shapefile(filename_) do |file_|
             assert_equal(has_z_ ? 18 : has_m_ ? 28 : 8, file_.shape_type_code)
@@ -196,23 +196,23 @@ module RGeo
             assert_nil(file_.next)
           end
         end
-        
-        
+
+
         def test_test4
           _test_multipoint_shapefile('test4', false, false)
         end
-        
-        
+
+
         def test_test5
           _test_multipoint_shapefile('test5', true, true)
         end
-        
-        
+
+
         def test_test6
           _test_multipoint_shapefile('test6', false, true)
         end
-        
-        
+
+
         def _test_polyline_shapefile(filename_, has_z_, has_m_)
           _open_shapefile(filename_) do |file_|
             assert_equal(has_z_ ? 13 : has_m_ ? 23 : 3, file_.shape_type_code)
@@ -306,23 +306,23 @@ module RGeo
             assert_equal(28, rec_.geometry[2].point_n(4).m) if has_m_
           end
         end
-        
-        
+
+
         def test_test7
           _test_polyline_shapefile('test7', false, false)
         end
-        
-        
+
+
         def test_test8
           _test_polyline_shapefile('test8', true, true)
         end
-        
-        
+
+
         def test_test9
           _test_polyline_shapefile('test9', false, true)
         end
-        
-        
+
+
         def _test_polygon_shapefile(filename_, has_z_, has_m_)
           _open_shapefile(filename_) do |file_|
             assert_equal(has_z_ ? 15 : has_m_ ? 25 : 5, file_.shape_type_code)
@@ -419,30 +419,30 @@ module RGeo
             assert_equal(28, rec_.geometry[0].interior_ring_n(1).point_n(4).m) if has_m_
           end
         end
-        
-        
+
+
         def test_test10
           _test_polygon_shapefile('test10', false, false)
         end
-        
-        
+
+
         def test_test11
           _test_polygon_shapefile('test11', true, true)
         end
-        
-        
+
+
         def test_test12
           _test_polygon_shapefile('test12', false, true)
         end
-        
-        
+
+
         def test_test13
           _open_shapefile('test13') do |file_|
             assert_equal(31, file_.shape_type_code)
             assert_equal(4, file_.num_records)
             assert_equal(true, file_.factory.property(:has_z_coordinate))
             # I believe shapefile's test13 incorrectly includes bounding
-            # box data for m, since there is no actual m data. So I 
+            # box data for m, since there is no actual m data. So I
             # disabled this test:
             # assert_equal(false, file_.factory.property(:has_m_coordinate))
             rec_ = file_.next
@@ -518,10 +518,10 @@ module RGeo
             assert_equal(14, rec_.geometry[0].interior_ring_n(1).point_n(4).z)
           end
         end
-        
-        
+
+
       end
-      
+
     end
   end
 end

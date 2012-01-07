@@ -1,3 +1,9 @@
+=== 0.2.3 / 2012-01-09
+
+* The dbf gem is now a hard dependency (now that it no longer pulls in ActiveSupport).
+* Reader#initialize no longer tries to modify its parameters in place. (Reported by Brad Johnson.)
+* Added an "rgeo-shapefile.rb" wrapper so bundler's auto-require will work without modification. (Reported by Mauricio Pasquier Juan.)
+
 === 0.2.2 / 2011-04-11
 
 * A .gemspec file is now available for gem building and bundler git integration.
