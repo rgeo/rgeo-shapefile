@@ -92,6 +92,7 @@ module RGeo
           _open_shapefile('test') do |file_|
             rec_ = file_.next
             assert_equal('Square with triangle missing', rec_['Descriptio'])
+            assert_equal('Square with triangle missing', rec_.attributes['Descriptio'])
             assert_equal(1, rec_['TestInt'])
             assert_equal(2.5, rec_['TestDouble'])
             assert_nil(rec_['NotAKey'])

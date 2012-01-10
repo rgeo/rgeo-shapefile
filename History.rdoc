@@ -2,6 +2,7 @@
 
 * The dbf gem is now a hard dependency (now that it no longer pulls in ActiveSupport).
 * Reader#initialize no longer tries to modify its parameters in place. (Reported by Brad Johnson.)
+* DBF column reading should be more robust. (Possible fix for GH-4, reported by michael-groble.)
 * Added an "rgeo-shapefile.rb" wrapper so bundler's auto-require will work without modification. (Reported by Mauricio Pasquier Juan.)
 
 === 0.2.2 / 2011-04-11

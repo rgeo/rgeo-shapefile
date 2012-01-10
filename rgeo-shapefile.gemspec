@@ -51,5 +51,5 @@
   s_.test_files = ::Dir.glob("test/**/tc_*.rb")
   s_.platform = ::Gem::Platform::RUBY
   s_.add_dependency('rgeo', '>= 0.3.3')
-  s_.add_dependency('dbf', '>= 1.6.0')
+  s_.add_dependency('dbf', '>= 1.7.0')
 end

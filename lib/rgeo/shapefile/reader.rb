@@ -465,9 +465,10 @@ module RGeo
           end
         attrs_ = {}
         if @attr_dbf
-          dbf_record_ = @attr_dbf.record(@cur_record_index)
+          dbf_record_attrs_ = @attr_dbf.record(@cur_record_index).attributes
           @attr_dbf.columns.each do |col_|
-            attrs_[col_.name] = dbf_record_.send(col_.underscored_name)
+            name_ = col_.name
+            attrs_[name_] = dbf_record_attrs_[name_]
           end
         end
         result_ = Record.new(@cur_record_index, geometry_, attrs_)
@@ -892,7 +893,7 @@ module RGeo
 
         # Returns the value for the given attribute key.
         def [](key_)
-          @attributes[key_]
+          @attributes[key_.to_s]
         end
 
       end
