@@ -34,10 +34,7 @@
 ;
 
 
-begin
-  require 'dbf'
-rescue ::LoadError => ex_
-end
+require 'dbf'
 
 
 module RGeo
@@ -225,7 +222,7 @@ module RGeo
         @opened = true
         @main_file = ::File.open(path_+'.shp', 'rb:ascii-8bit')
         @index_file = ::File.open(path_+'.shx', 'rb:ascii-8bit')
-        if defined?(::DBF) && ::File.file?(path_+'.dbf') && ::File.readable?(path_+'.dbf')
+        if ::File.file?(path_+'.dbf') && ::File.readable?(path_+'.dbf')
           @attr_dbf = ::DBF::Table.new(path_+'.dbf')
         else
           @attr_dbf = nil
@@ -443,7 +440,7 @@ module RGeo
 
 
       def _read_next_record  # :nodoc:
-        num_, length_ = @main_file.read(8).unpack('NN')
+        length_ = @main_file.read(8).unpack('NN')[1]
         data_ = @main_file.read(length_ * 2)
         shape_type_ = data_[0,4].unpack('V').first
         geometry_ =
@@ -821,11 +818,11 @@ module RGeo
                 geos_polygons_ = sequence_.map{ |ring_| geos_factory_.polygon(ring_) }
                 outer_poly_ = nil
                 outer_index_ = 0
-                geos_polygons_.each_with_index do |poly_, index_|
+                geos_polygons_.each_with_index do |poly_, idx_|
                   if outer_poly_
                     if poly_.contains?(outer_poly_)
                       outer_poly_ = poly_
-                      outer_index_ = index_
+                      outer_index_ = idx_
                       break;
                     end
                   else

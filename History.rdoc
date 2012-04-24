@@ -1,3 +1,8 @@
+=== 0.2.4 / 2012-04-??
+
+* Fixed a few warnings
+* Travis CI integration.
+
 === 0.2.3 / 2012-01-09
 
 * The dbf gem is now a hard dependency (now that it no longer pulls in ActiveSupport).

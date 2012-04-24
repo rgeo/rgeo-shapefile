@@ -38,7 +38,7 @@ Example:
 RGeo::Shapefile has the following requirements:
 
 * Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.
-* rgeo 0.3.3 or later.
+* rgeo 0.3.11 or later.
 * dbf 1.7 or later.
 
 Install RGeo::Shapefile as a gem:
@@ -70,7 +70,7 @@ Contact the author at dazuma at gmail dot com.
 
 \RGeo is written by Daniel Azuma (http://www.daniel-azuma.com).
 
-Development of \RGeo is sponsored by GeoPage, Inc. (http://www.geopage.com).
+Development is supported by Pirq. (http://www.pirq.com).
 
 Although we don't use shapelib (http://shapelib.maptools.org) to read
 ESRI shapefiles, we did borrow a bunch of their test cases.
