@@ -38,7 +38,7 @@ Example:
 RGeo::Shapefile has the following requirements:
 
 * Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.
-* rgeo 0.3.11 or later.
+* rgeo 0.3.12 or later.
 * dbf 1.7 or later.
 
 Install RGeo::Shapefile as a gem:
