@@ -62,6 +62,8 @@ Source code is hosted on Github at http://github.com/dazuma/rgeo-shapefile
 
 Contributions are welcome. Fork the project on Github.
 
+Build status: {<img src="https://secure.travis-ci.org/dazuma/rgeo-shapefile.png" />}[http://travis-ci.org/dazuma/rgeo-shapefile]
+
 Report bugs on Github issues at http://github.org/dazuma/rgeo-shapefile/issues
 
 Contact the author at dazuma at gmail dot com.
