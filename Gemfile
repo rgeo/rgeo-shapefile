@@ -41,5 +41,6 @@ group(:test) do
   gem('ffi-geos', '>= 0.0.4')
   gem('rgeo', '>= 0.3.12')
   gem('fastercsv')
+  gem('rdoc', '>= 3.12')
   gem('dbf', '>= 1.7')
 end
