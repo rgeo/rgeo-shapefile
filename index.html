@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="RGeo::Shapefile : RGeo component for reading ESRI shapefiles" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>RGeo::Shapefile</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/dazuma/rgeo-shapefile">View on GitHub</a>
+
+          <h1 id="project_title">RGeo::Shapefile</h1>
+          <h2 id="project_tagline">RGeo component for reading ESRI shapefiles</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/dazuma/rgeo-shapefile/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/dazuma/rgeo-shapefile/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><a href="http://dazuma.github.com/rgeo">RGeo</a> is a key component for writing location-aware applications in the Ruby programming language. At its core is an implementation of the industry standard OGC Simple Features Specification, which provides data representations of geometric objects such as points, lines, and polygons, along with a set of geometric analysis operation.</p>
+
+<p>RGeo::Shapefile is an optional RGeo add-on module for reading geospatial data from ESRI shapefiles. The shapefile format is a common file format used for sharing geospatial data sets. It is specified in
+<a href="http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf">this ESRI whitepaper</a>.</p>
+
+<p>Example:</p>
+
+<div class="highlight">
+<pre><span class="nb">require</span> <span class="s1">'rgeo/shapefile'</span>
+
+<span class="no">RGeo</span><span class="o">::</span><span class="no">Shapefile</span><span class="o">::</span><span class="no">Reader</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">'myshpfil.shp'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+  <span class="nb">puts</span> <span class="s2">"File contains </span><span class="si">#{</span><span class="n">file</span><span class="o">.</span><span class="n">num_records</span><span class="si">}</span><span class="s2"> records."</span>
+  <span class="n">file</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">record</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">"Record number </span><span class="si">#{</span><span class="n">record</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2">:"</span>
+    <span class="nb">puts</span> <span class="s2">"  Geometry: </span><span class="si">#{</span><span class="n">record</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">as_text</span><span class="si">}</span><span class="s2">"</span>
+    <span class="nb">puts</span> <span class="s2">"  Attributes: </span><span class="si">#{</span><span class="n">record</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+  <span class="n">file</span><span class="o">.</span><span class="n">rewind</span>
+  <span class="n">record</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">next</span>
+  <span class="nb">puts</span> <span class="s2">"First record geometry was: </span><span class="si">#{</span><span class="n">record</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">as_text</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>For more information:</p>
+
+<ul>
+<li>See the <a href="http://dazuma.github.com/rgeo-shapefile/rdoc">documentation</a>
+</li>
+<li>Source code on <a href="http://github.com/dazuma/rgeo-shapefile">Github</a>
+</li>
+<li>Report issues <a href="http://github.com/dazuma/rgeo-shapefile/issues">here</a>
+</li>
+<li>Questions? Ask on the <a href="http://groups.google.com/group/rgeo-users">mailing list</a>
+</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">RGeo::Shapefile maintained by <a href="https://github.com/dazuma">dazuma</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
