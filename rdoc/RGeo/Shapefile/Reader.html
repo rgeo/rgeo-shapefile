@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class RGeo::Shapefile::Reader - RGeo::Shapefile 0.2.4 Documentation</title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/rgeo/shapefile/reader.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-open">::open</a>
+    
+    <li><a href="#method-i-5B-5D">#[]</a>
+    
+    <li><a href="#method-i-attributes_available-3F">#attributes_available?</a>
+    
+    <li><a href="#method-i-close">#close</a>
+    
+    <li><a href="#method-i-cur_index">#cur_index</a>
+    
+    <li><a href="#method-i-each">#each</a>
+    
+    <li><a href="#method-i-factory">#factory</a>
+    
+    <li><a href="#method-i-get">#get</a>
+    
+    <li><a href="#method-i-mmax">#mmax</a>
+    
+    <li><a href="#method-i-mmin">#mmin</a>
+    
+    <li><a href="#method-i-next">#next</a>
+    
+    <li><a href="#method-i-num_records">#num_records</a>
+    
+    <li><a href="#method-i-open-3F">#open?</a>
+    
+    <li><a href="#method-i-rewind">#rewind</a>
+    
+    <li><a href="#method-i-seek_index">#seek_index</a>
+    
+    <li><a href="#method-i-shape_type_code">#shape_type_code</a>
+    
+    <li><a href="#method-i-size">#size</a>
+    
+    <li><a href="#method-i-xmax">#xmax</a>
+    
+    <li><a href="#method-i-xmin">#xmin</a>
+    
+    <li><a href="#method-i-ymax">#ymax</a>
+    
+    <li><a href="#method-i-ymin">#ymin</a>
+    
+    <li><a href="#method-i-zmax">#zmax</a>
+    
+    <li><a href="#method-i-zmin">#zmin</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../History_rdoc.html">History</a>
+  
+    <li class="file"><a href="../../README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../RGeo.html">RGeo</a>
+  
+    <li><a href="../../RGeo/Shapefile.html">RGeo::Shapefile</a>
+  
+    <li><a href="../../RGeo/Shapefile/Reader.html">RGeo::Shapefile::Reader</a>
+  
+    <li><a href="../../RGeo/Shapefile/Reader/Record.html">RGeo::Shapefile::Reader::Record</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class RGeo::Shapefile::Reader</h1>
+
+  <div id="description" class="description">
+    
+<p>Represents a shapefile that is open for reading.</p>
+
+<p>You can use this object to read a shapefile straight through, yielding the
+data in a block; or you can perform random access reads of indexed records.</p>
+
+<p>You must close this object after you are done, in order to close the
+underlying files. Alternatively, you can pass a block to <a
+href="Reader.html#method-c-open">::open</a>, and the reader will be closed
+automatically for you at the end of the block.</p>
+
+<h3 id="label-Dependencies">Dependencies</h3>
+
+<p>Attributes in shapefiles are stored in a “.dbf” (dBASE) format file. The
+“dbf” gem is required to read these files. If this gem is not installed,
+shapefile reading will still function, but attributes will not be
+available.</p>
+
+<p>Correct interpretation of the polygon shape type requires some
+functionality that is available in the RGeo::Geos module. Hence, reading a
+polygon shapefile will generally fail if that module is not available or
+the GEOS library is not installed. It is possible to bypass this
+requirement by relaxing the polygon tests and making some assumptions about
+the file format. See the documentation for <a
+href="Reader.html#method-c-open">::open</a> for details.</p>
+
+<h3 id="label-Shapefile+support"><a href="../Shapefile.html">Shapefile</a> support</h3>
+
+<p>This class supports shapefiles formatted according to the 1998 “ESRI <a
+href="../Shapefile.html">Shapefile</a> Technical Description”. It converts
+shapefile data to <a href="../../RGeo.html">RGeo</a> geometry objects, as
+follows:</p>
+<ul><li>
+<p><a href="../Shapefile.html">Shapefile</a> records are represented by the <a
+href="Reader/Record.html">RGeo::Shapefile::Reader::Record</a> class, which
+provides the geometry, the attributes, and the record number (0-based).</p>
+</li><li>
+<p>Attribute reading is supported by the “dbf” gem, which provides the proper
+typecasting for numeric, string, boolean, and date/time column types. Data
+in unrecognized column types are returned as strings.</p>
+</li><li>
+<p>All shape types documented in the 1998 publication are supported, including
+point, polyline, polygon, multipoint, and multipatch, along with Z and M
+versions.</p>
+</li><li>
+<p>Null shapes are translated into nil geometry objects. That is, <a
+href="Reader/Record.html#attribute-i-geometry">RGeo::Shapefile::Reader::Record#geometry</a>
+will return nil if that record has a null shape.</p>
+</li><li>
+<p>The point shape type yields Point geometries.</p>
+</li><li>
+<p>The multipoint shape type yields MultiPoint geometries.</p>
+</li><li>
+<p>The polyline shape type yields MultiLineString geometries.</p>
+</li><li>
+<p>The polygon shape type yields MultiPolygon geometries.</p>
+</li><li>
+<p>The multipatch shape type yields GeometryCollection geometries. (See below
+for an explanation of why we do not return a MultiPolygon.)</p>
+</li></ul>
+
+<p>Some special notes and limitations in our shapefile support:</p>
+<ul><li>
+<p>Our implementation assumes that shapefile data is in a Cartesian coordinate
+system when it performs certain computations, such as directionality of
+polygon rings. It also ignores the 180 degree longitude seam, so it may not
+correctly interpret objects whose coordinates are in lat/lon space and
+which span that seam.</p>
+</li><li>
+<p>The ESRI polygon specification allows interior rings to touch their
+exterior ring in a finite number of points. This technically violates the
+OGC Polygon definition. However, such a structure remains a legal OGC
+MultiPolygon, and it is in principle possible to detect this case and
+transform the geometry type accordingly. We do not yet do this. Therefore,
+it is possible for a shapefile with polygon type to yield an illegal
+geometry.</p>
+</li><li>
+<p>The ESRI polygon specification clearly specifies the winding order for
+inner and outer rings: outer rings are clockwise while inner rings are
+counterclockwise. We have heard it reported that there may be shapefiles
+out there that do not conform to this spec. Such shapefiles may not read
+correctly.</p>
+</li><li>
+<p>The ESRI multipatch specification includes triangle strips and triangle
+fans as ways of constructing polygonal patches. We read in the aggregate
+polygonal patches, and do not preserve the individual triangles.</p>
+</li><li>
+<p>The ESRI multipatch specification allows separate patch parts to share
+common boundaries, thus effectively becoming a single polygon. It is in
+principle possible to detect this case and merge the constituent polygons;
+however, such a data structure implies that the intent is for such polygons
+to remain distinct objects even though they share a common boundary.
+Therefore, we do not attempt to merge such polygons. However, this means it
+is possible for a multipatch to violate the OGC MultiPolygon assertions,
+which do not allow constituent polygons to share a common boundary.
+Therefore, when reading a multipatch, we return a GeometryCollection
+instead of a MultiPolygon.</p>
+</li></ul>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="NODATA_LIMIT">NODATA_LIMIT
+        
+        <dd class="description"><p>Values less than this value are considered “no value” in the shapefile
+format specification.</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-open" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">open</span><span
+            class="method-args">(path_, opts_={}) { |file_| ... }</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Create a new shapefile reader. You must pass the path for the main
+shapefile (e.g. “path/to/file.shp”). You may also omit the “.shp” extension
+from the path. All three files that make up the shapefile (“.shp”, “.shx”,
+and “.dbf”) must be present for successful opening of a shapefile.</p>
+
+<p>You must also provide a RGeo::Feature::FactoryGenerator. It should
+understand the configuration options <code>:has_z_coordinate</code> and
+<code>:has_m_coordinate</code>. You may also pass a specific
+RGeo::Feature::Factory, or nil to specify the default Cartesian
+FactoryGenerator.</p>
+
+<p>If you provide a block, the shapefile reader will be yielded to the block,
+and automatically closed at the end of the block. If you do not provide a
+block, the shapefile reader will be returned from this call. It is then the
+caller’s responsibility to close the reader when it is done.</p>
+
+<p>Options include:</p>
+<dl class="rdoc-list label-list"><dt><code>:factory_generator</code>
+<dd>
+<p>A RGeo::Feature::FactoryGenerator that should return a factory based on the
+dimension settings in the input. It should understand the configuration
+options <code>:has_z_coordinate</code> and <code>:has_m_coordinate</code>.
+You may also pass a specific RGeo::Feature::Factory. If no factory
+generator is provided, the default Cartesian factory generator is used.
+This option can also be specified using the <code>:factory</code> key.</p>
+</dd><dt><code>:srid</code>
+<dd>
+<p>If provided, this option is passed to the factory generator. This is useful
+because shapefiles do not contain a SRID.</p>
+</dd><dt><code>:assume_inner_follows_outer</code>
+<dd>
+<p>If set to true, some assumptions are made about ring ordering in a polygon
+shapefile. See below for details. Default is false.</p>
+</dd></dl>
+
+<h3 id="method-c-open-label-Ring+ordering+in+polygon+shapefiles">Ring ordering in polygon shapefiles</h3>
+
+<p>The ESRI polygon shape type specifies that the ordering of rings in the
+shapefile is not significant. That is, rings can be in any order, and inner
+rings need not necessarily follow the outer ring they are associated with.
+This specification causes some headache in the process of constructing
+polygons from a shapefile, because it becomes necessary to run some
+geometric analysis on the rings that are read in, in order to determine
+which inner rings should go with which outer rings.</p>
+
+<p>RGeo’s shapefile reader uses GEOS to perform this analysis. However, this
+means that if GEOS is not available, the analysis will fail. It also means
+reading polygons may be slow, especially for polygon records with a large
+number of parts. Therefore, it is possible to turn off this analysis by
+setting the <code>:assume_inner_follows_outer</code> switch when creating a
+<a href="Reader.html">Reader</a>. This causes the shapefile reader to
+assume that inner rings always follow their corresponding outer ring in the
+file. This is probably true for most well-behaved shapefiles out there, but
+since it is not part of the specification, this shortcutting is not turned
+on by default. However, if you are running <a
+href="../../RGeo.html">RGeo</a> on a platform without GEOS, you have no
+choice but to turn on this switch and make this assumption about your input
+shapefiles.</p>
+          
+
+          
+          <div class="method-source-code" id="open-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 200</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">path_</span>, <span class="ruby-identifier">opts_</span>={}, &amp;<span class="ruby-identifier">block_</span>)
+  <span class="ruby-identifier">file_</span> = <span class="ruby-identifier">new</span>(<span class="ruby-identifier">path_</span>, <span class="ruby-identifier">opts_</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-keyword">yield</span> <span class="ruby-identifier">file_</span>
+    <span class="ruby-keyword">ensure</span>
+      <span class="ruby-identifier">file_</span>.<span class="ruby-identifier">close</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">file_</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- open-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- open-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-5B-5D" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">[]</span><span
+            class="method-args">(index_)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Reader.html#method-i-get">get</a>
+        </div>
+        
+      </div><!-- 5B-5D-method -->
+
+    
+      <div id="method-i-attributes_available-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">attributes_available?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns true if attributes are available. This may be false because there
+is no “.dbf” file or because the dbf gem is not available.</p>
+          
+
+          
+          <div class="method-source-code" id="attributes_available-3F-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 299</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">attributes_available?</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> (<span class="ruby-ivar">@attr_dbf</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- attributes_available-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- attributes_available-3F-method -->
+
+    
+      <div id="method-i-close" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">close</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Close the shapefile. You should not use this <a
+href="Reader.html">Reader</a> after it has been closed. Most methods will
+return nil.</p>
+          
+
+          
+          <div class="method-source-code" id="close-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 277</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">close</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opened</span>
+    <span class="ruby-ivar">@main_file</span>.<span class="ruby-identifier">close</span>
+    <span class="ruby-ivar">@index_file</span>.<span class="ruby-identifier">close</span>
+    <span class="ruby-ivar">@attr_dbf</span>.<span class="ruby-identifier">close</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@attr_dbf</span>
+    <span class="ruby-ivar">@opened</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- close-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- close-method -->
+
+    
+      <div id="method-i-cur_index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cur_index</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the current file pointer as a record index (0-based). This is the
+record number that will be read when <a
+href="Reader.html#method-i-next">#next</a> is called.</p>
+          
+
+          
+          <div class="method-source-code" id="cur_index-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 386</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cur_index</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@cur_record_index</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- cur_index-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- cur_index-method -->
+
+    
+      <div id="method-i-each" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">each</span><span
+            class="method-args">() { |_read_next_record| ... }</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Read the remaining records starting with the current record index, and
+yield the <a href="Reader/Record.html">Reader::Record</a> for each one.</p>
+          
+
+          
+          <div class="method-source-code" id="each-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 401</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">each</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-ivar">@cur_record_index</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@num_records</span>
+    <span class="ruby-keyword">yield</span> <span class="ruby-identifier">_read_next_record</span>
+  <span class="ruby-keyword">end</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opened</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- each-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- each-method -->
+
+    
+      <div id="method-i-factory" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">factory</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the factory used by this reader.</p>
+          
+
+          
+          <div class="method-source-code" id="factory-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 306</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">factory</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@factory</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- factory-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- factory-method -->
+
+    
+      <div id="method-i-get" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get</span><span
+            class="method-args">(index_)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Get the given record number. Equivalent to seeking to that index and
+calling next.</p>
+          
+
+          
+          <div class="method-source-code" id="get-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 436</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get</span>(<span class="ruby-identifier">index_</span>)
+  <span class="ruby-identifier">seek_index</span>(<span class="ruby-identifier">index_</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">next</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get-source -->
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Reader.html#method-i-5B-5D">[]</a>
+        </div>
+        
+
+        
+      </div><!-- get-method -->
+
+    
+      <div id="method-i-mmax" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">mmax</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the maximum m, or nil if the shapefile does not contain m.</p>
+          
+
+          
+          <div class="method-source-code" id="mmax-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 377</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">mmax</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@mmax</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- mmax-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- mmax-method -->
+
+    
+      <div id="method-i-mmin" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">mmin</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the minimum m, or nil if the shapefile does not contain m.</p>
+          
+
+          
+          <div class="method-source-code" id="mmin-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 370</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">mmin</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@mmin</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- mmin-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- mmin-method -->
+
+    
+      <div id="method-i-next" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">next</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Read and return the next record as a <a
+href="Reader/Record.html">Reader::Record</a>.</p>
+          
+
+          
+          <div class="method-source-code" id="next-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 393</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">next</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@cur_record_index</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@num_records</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">_read_next_record</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- next-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- next-method -->
+
+    
+      <div id="method-i-num_records" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">num_records</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the number of records in the shapefile.</p>
+          
+
+          
+          <div class="method-source-code" id="num_records-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 313</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">num_records</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@num_records</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- num_records-source -->
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Reader.html#method-i-size">size</a>
+        </div>
+        
+
+        
+      </div><!-- num_records-method -->
+
+    
+      <div id="method-i-open-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">open?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns true if this <a href="Reader.html">Reader</a> is still open, or
+false if it has been closed.</p>
+          
+
+          
+          <div class="method-source-code" id="open-3F-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 290</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">open?</span>
+  <span class="ruby-ivar">@opened</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- open-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- open-3F-method -->
+
+    
+      <div id="method-i-rewind" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">rewind</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Rewind to the beginning of the file. Equivalent to <a
+href="Reader.html#method-i-seek_index">#seek_index</a>(0).</p>
+          
+
+          
+          <div class="method-source-code" id="rewind-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 428</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rewind</span>
+  <span class="ruby-identifier">seek_index</span>(<span class="ruby-value">0</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- rewind-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- rewind-method -->
+
+    
+      <div id="method-i-seek_index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">seek_index</span><span
+            class="method-args">(index_)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Seek to the given record index.</p>
+          
+
+          
+          <div class="method-source-code" id="seek_index-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 410</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">seek_index</span>(<span class="ruby-identifier">index_</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opened</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">index_</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">index_</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-ivar">@num_records</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">index_</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@num_records</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">index_</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@cur_record_index</span>
+      <span class="ruby-ivar">@index_file</span>.<span class="ruby-identifier">seek</span>(<span class="ruby-value">100</span><span class="ruby-operator">+</span><span class="ruby-value">8</span>*<span class="ruby-identifier">index_</span>)
+      <span class="ruby-identifier">offset_</span> = <span class="ruby-ivar">@index_file</span>.<span class="ruby-identifier">read</span>(<span class="ruby-value">4</span>).<span class="ruby-identifier">unpack</span>(<span class="ruby-string">'N'</span>).<span class="ruby-identifier">first</span>
+      <span class="ruby-ivar">@main_file</span>.<span class="ruby-identifier">seek</span>(<span class="ruby-identifier">offset_</span>*<span class="ruby-value">2</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@cur_record_index</span> = <span class="ruby-identifier">index_</span>
+    <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- seek_index-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- seek_index-method -->
+
+    
+      <div id="method-i-shape_type_code" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">shape_type_code</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the shape type code.</p>
+          
+
+          
+          <div class="method-source-code" id="shape_type_code-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 321</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">shape_type_code</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@shape_type_code</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- shape_type_code-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- shape_type_code-method -->
+
+    
+      <div id="method-i-size" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">size</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Reader.html#method-i-num_records">num_records</a>
+        </div>
+        
+      </div><!-- size-method -->
+
+    
+      <div id="method-i-xmax" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">xmax</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the maximum x.</p>
+          
+
+          
+          <div class="method-source-code" id="xmax-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 335</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">xmax</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@xmax</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- xmax-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- xmax-method -->
+
+    
+      <div id="method-i-xmin" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">xmin</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the minimum x.</p>
+          
+
+          
+          <div class="method-source-code" id="xmin-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 328</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">xmin</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@xmin</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- xmin-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- xmin-method -->
+
+    
+      <div id="method-i-ymax" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ymax</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the maximum y.</p>
+          
+
+          
+          <div class="method-source-code" id="ymax-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 349</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ymax</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@ymax</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ymax-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ymax-method -->
+
+    
+      <div id="method-i-ymin" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ymin</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the minimum y.</p>
+          
+
+          
+          <div class="method-source-code" id="ymin-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 342</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ymin</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@ymin</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ymin-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ymin-method -->
+
+    
+      <div id="method-i-zmax" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">zmax</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the maximum z, or nil if the shapefile does not contain z.</p>
+          
+
+          
+          <div class="method-source-code" id="zmax-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 363</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">zmax</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@zmax</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- zmax-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- zmax-method -->
+
+    
+      <div id="method-i-zmin" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">zmin</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the minimum z, or nil if the shapefile does not contain z.</p>
+          
+
+          
+          <div class="method-source-code" id="zmin-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 356</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">zmin</span>
+  <span class="ruby-ivar">@opened</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@zmin</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- zmin-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- zmin-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

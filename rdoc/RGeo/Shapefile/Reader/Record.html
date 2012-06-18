@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class RGeo::Shapefile::Reader::Record - RGeo::Shapefile 0.2.4 Documentation</title>
+
+<link type="text/css" media="screen" href="../../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../../index.html">Home</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/rgeo/shapefile/reader.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-5B-5D">#[]</a>
+    
+    <li><a href="#method-i-keys">#keys</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../../History_rdoc.html">History</a>
+  
+    <li class="file"><a href="../../../README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../../RGeo.html">RGeo</a>
+  
+    <li><a href="../../../RGeo/Shapefile.html">RGeo::Shapefile</a>
+  
+    <li><a href="../../../RGeo/Shapefile/Reader.html">RGeo::Shapefile::Reader</a>
+  
+    <li><a href="../../../RGeo/Shapefile/Reader/Record.html">RGeo::Shapefile::Reader::Record</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class RGeo::Shapefile::Reader::Record</h1>
+
+  <div id="description" class="description">
+    
+<p><a href="../../Shapefile.html">Shapefile</a> records are provided to the
+caller as objects of this type. The record includes the record index
+(0-based), the geometry (which may be nil if the shape type is the null
+type), and a hash of attributes from the associated dbf file.</p>
+
+<p>You should not need to create objects of this type yourself.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-attributes" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">attributes</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The attributes as a hash.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-geometry" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">geometry</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The geometry contained in this shapefile record</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-index" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">index</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The 0-based record number</p>
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-5B-5D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">[]</span><span
+            class="method-args">(key_)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the value for the given attribute key.</p>
+          
+
+          
+          <div class="method-source-code" id="5B-5D-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 892</span>
+<span class="ruby-keyword">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">key_</span>)
+  <span class="ruby-ivar">@attributes</span>[<span class="ruby-identifier">key_</span>.<span class="ruby-identifier">to_s</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- 5B-5D-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- 5B-5D-method -->
+
+    
+      <div id="method-i-keys" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">keys</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns an array of keys for all this record’s attributes.</p>
+          
+
+          
+          <div class="method-source-code" id="keys-source">
+            <pre><span class="ruby-comment"># File lib/rgeo/shapefile/reader.rb, line 887</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">keys</span>
+  <span class="ruby-ivar">@attributes</span>.<span class="ruby-identifier">keys</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- keys-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- keys-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
