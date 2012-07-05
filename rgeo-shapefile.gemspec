@@ -37,7 +37,7 @@
   s_.name = 'rgeo-shapefile'
   s_.summary = 'An RGeo module for reading ESRI shapefiles.'
   s_.description = "RGeo is a geospatial data library for Ruby. RGeo::Shapefile is an optional RGeo module for reading the ESRI shapefile format, a common file format for geospatial datasets."
-  s_.version = "#{::File.read('Version').strip}.build#{::Time.now.utc.strftime('%Y%m%d%H%M%S')}"
+  s_.version = "#{::File.read('Version').strip}.nonrelease"
   s_.author = 'Daniel Azuma'
   s_.email = 'dazuma@gmail.com'
   s_.homepage = "http://dazuma.github.com/rgeo-shapefile"
