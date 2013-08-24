@@ -222,6 +222,13 @@ module RGeo
         @opened = true
         @main_file = ::File.open(path_+'.shp', 'rb:ascii-8bit')
         @index_file = ::File.open(path_+'.shx', 'rb:ascii-8bit')
+
+        if ::File.file?(path_+'.prj') && ::File.readable?(path_+'.prj')
+          @prj_file = ::File.open(path_+'.prj', 'rb:ascii-8bit')
+        else
+          @prj_file = nil
+        end
+
         if ::File.file?(path_+'.dbf') && ::File.readable?(path_+'.dbf')
           @attr_dbf = ::DBF::Table.new(path_+'.dbf')
         else
@@ -278,6 +285,7 @@ module RGeo
         if @opened
           @main_file.close
           @index_file.close
+          @prj_file.close if @prj_file
           @attr_dbf.close if @attr_dbf
           @opened = false
         end
@@ -385,6 +393,10 @@ module RGeo
 
       def cur_index
         @opened ? @cur_record_index : nil
+      end
+      
+      def prj
+        @opened && @prj_file ? @prj_file.read : nil  
       end
 
 
