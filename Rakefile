@@ -64,10 +64,8 @@ platform_ =
 platform_suffix_ =
   case platform_
   when :mri
-    if ::RUBY_VERSION =~ /^1\.8\..*$/
-      'mri18'
-    elsif ::RUBY_VERSION =~ /^1\.9\..*$/
-      'mri19'
+    if ::RUBY_VERSION =~ /^(\d)\.(\d).*/
+      "mri#{$1}#{$2}".tap { |s| puts s }
     else
       raise "Unknown version of Matz Ruby Interpreter (#{::RUBY_VERSION})"
     end
@@ -75,7 +73,6 @@ platform_suffix_ =
   when :jruby then 'jruby'
   else 'unknown'
   end
-
 
 # Directories
 
