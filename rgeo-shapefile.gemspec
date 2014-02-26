@@ -52,4 +52,5 @@
   s_.platform = ::Gem::Platform::RUBY
   s_.add_dependency('rgeo', '>= 0.3.13')
   s_.add_dependency('dbf', '>= 1.7.0')
+  s_.add_dependency('promise')
 end

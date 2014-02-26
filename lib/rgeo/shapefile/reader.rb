@@ -35,6 +35,7 @@
 
 
 require 'dbf'
+require 'promise'
 
 
 module RGeo
@@ -442,24 +443,7 @@ module RGeo
       def _read_next_record  # :nodoc:
         length_ = @main_file.read(8).unpack('NN')[1]
         data_ = @main_file.read(length_ * 2)
-        shape_type_ = data_[0,4].unpack('V').first
-        geometry_ =
-          case shape_type_
-          when 1 then _read_point(data_)
-          when 3 then _read_polyline(data_)
-          when 5 then _read_polygon(data_)
-          when 8 then _read_multipoint(data_)
-          when 11 then _read_point(data_, :z)
-          when 13 then _read_polyline(data_, :z)
-          when 15 then _read_polygon(data_, :z)
-          when 18 then _read_multipoint(data_, :z)
-          when 21 then _read_point(data_, :m)
-          when 23 then _read_polyline(data_, :m)
-          when 25 then _read_polygon(data_, :m)
-          when 28 then _read_multipoint(data_, :m)
-          when 31 then _read_multipatch(data_)
-          else nil
-          end
+        geometry_ = promise { _read_geometry(data_) }
         attrs_ = {}
         if @attr_dbf
           dbf_record_attrs_ = @attr_dbf.record(@cur_record_index).attributes
@@ -473,6 +457,25 @@ module RGeo
         result_
       end
 
+      def _read_geometry(data_)
+        shape_type_ = data_[0,4].unpack('V').first
+        case shape_type_
+        when 1 then _read_point(data_)
+        when 3 then _read_polyline(data_)
+        when 5 then _read_polygon(data_)
+        when 8 then _read_multipoint(data_)
+        when 11 then _read_point(data_, :z)
+        when 13 then _read_polyline(data_, :z)
+        when 15 then _read_polygon(data_, :z)
+        when 18 then _read_multipoint(data_, :z)
+        when 21 then _read_point(data_, :m)
+        when 23 then _read_polyline(data_, :m)
+        when 25 then _read_polygon(data_, :m)
+        when 28 then _read_multipoint(data_, :m)
+        when 31 then _read_multipatch(data_)
+        else nil
+        end
+      end
 
       def _read_point(data_, opt_=nil)  # :nodoc:
         case opt_
