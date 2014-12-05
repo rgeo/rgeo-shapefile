@@ -90,7 +90,7 @@ Development is supported by:
 Although we don't use shapelib (http://shapelib.maptools.org) to read
 ESRI shapefiles, we did borrow a bunch of their test cases.
 
-=== License
+## License
 
 Copyright 2014 Daniel Azuma
 
