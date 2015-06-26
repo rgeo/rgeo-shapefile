@@ -115,6 +115,7 @@ module RGeo
       #
       # If you provide a block, the shapefile reader will be yielded to
       # the block, and automatically closed at the end of the block.
+      # In this instance, File.open returns the value of the block.
       # If you do not provide a block, the shapefile reader will be
       # returned from this call. It is then the caller's responsibility
       # to close the reader when it is done.
@@ -169,7 +170,6 @@ module RGeo
           ensure
             file_.close
           end
-          nil
         else
           file_
         end

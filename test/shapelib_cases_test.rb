@@ -13,6 +13,14 @@ module RGeo
         end
 
 
+        def test_open_with_block_returns_value_of_block
+          result = _open_shapefile('test') do |file_|
+            file_.num_records
+          end
+          assert_equal(3, result)
+        end
+
+
         def test_rewind
           _open_shapefile('test') do |file_|
             assert_equal(0, file_.cur_index)
