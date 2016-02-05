@@ -1,5 +1,5 @@
-require 'minitest/autorun'
-require 'rgeo/shapefile'
+require "minitest/autorun"
+require "rgeo/shapefile"
 
 module RGeo
   module Shapefile
@@ -10,14 +10,14 @@ module RGeo
         end
 
         def test_open_with_block_returns_value_of_block
-          result = _open_shapefile('test') do |file_|
+          result = _open_shapefile("test") do |file_|
             file_.num_records
           end
           assert_equal(3, result)
         end
 
         def test_rewind
-          _open_shapefile('test') do |file_|
+          _open_shapefile("test") do |file_|
             assert_equal(0, file_.cur_index)
             rec_ = file_.next
             assert_equal(0, rec_.index)
@@ -32,7 +32,7 @@ module RGeo
         end
 
         def test_seek
-          _open_shapefile('test') do |file_|
+          _open_shapefile("test") do |file_|
             assert_equal(0, file_.cur_index)
             assert_equal(false, file_.seek_index(4))
             assert_equal(0, file_.cur_index)
@@ -44,7 +44,7 @@ module RGeo
             rec_ = file_.next
             assert_equal(2, rec_.index)
             assert_equal(0, rec_.geometry[0].num_interior_rings)
-            assert_equal('', rec_['Descriptio'])
+            assert_equal("", rec_["Descriptio"])
             file_.seek_index(0)
             assert_equal(0, file_.cur_index)
             rec_ = file_.next
@@ -54,26 +54,26 @@ module RGeo
         end
 
         def test_attributes
-          _open_shapefile('test') do |file_|
+          _open_shapefile("test") do |file_|
             rec_ = file_.next
-            assert_equal('Square with triangle missing', rec_['Descriptio'])
-            assert_equal('Square with triangle missing', rec_.attributes['Descriptio'])
-            assert_equal(1, rec_['TestInt'])
-            assert_equal(2.5, rec_['TestDouble'])
-            assert_nil(rec_['NotAKey'])
+            assert_equal("Square with triangle missing", rec_["Descriptio"])
+            assert_equal("Square with triangle missing", rec_.attributes["Descriptio"])
+            assert_equal(1, rec_["TestInt"])
+            assert_equal(2.5, rec_["TestDouble"])
+            assert_nil(rec_["NotAKey"])
             rec_ = file_.next
-            assert_equal('Smaller triangle', rec_['Descriptio'])
-            assert_equal(100, rec_['TestInt'])
-            assert_equal(1000.25, rec_['TestDouble'])
+            assert_equal("Smaller triangle", rec_["Descriptio"])
+            assert_equal(100, rec_["TestInt"])
+            assert_equal(1000.25, rec_["TestDouble"])
             rec_ = file_.next
-            assert_equal('', rec_['Descriptio'])
-            assert_equal(0, rec_['TestInt'])
-            assert_equal(0, rec_['TestDouble'])
+            assert_equal("", rec_["Descriptio"])
+            assert_equal(0, rec_["TestInt"])
+            assert_equal(0, rec_["TestDouble"])
           end
         end
 
         def test_test0
-          _open_shapefile('test0') do |file_|
+          _open_shapefile("test0") do |file_|
             assert_equal(0, file_.shape_type_code)
             assert_equal(2, file_.num_records)
             rec_ = file_.next
@@ -111,15 +111,15 @@ module RGeo
         end
 
         def test_test1
-          _test_point_shapefile('test1', false, false)
+          _test_point_shapefile("test1", false, false)
         end
 
         def test_test2
-          _test_point_shapefile('test2', true, true)
+          _test_point_shapefile("test2", true, true)
         end
 
         def test_test3
-          _test_point_shapefile('test3', false, true)
+          _test_point_shapefile("test3", false, true)
         end
 
         def _test_multipoint_shapefile(filename_, has_z_, has_m_)
@@ -158,15 +158,15 @@ module RGeo
         end
 
         def test_test4
-          _test_multipoint_shapefile('test4', false, false)
+          _test_multipoint_shapefile("test4", false, false)
         end
 
         def test_test5
-          _test_multipoint_shapefile('test5', true, true)
+          _test_multipoint_shapefile("test5", true, true)
         end
 
         def test_test6
-          _test_multipoint_shapefile('test6', false, true)
+          _test_multipoint_shapefile("test6", false, true)
         end
 
         def _test_polyline_shapefile(filename_, has_z_, has_m_)
@@ -264,15 +264,15 @@ module RGeo
         end
 
         def test_test7
-          _test_polyline_shapefile('test7', false, false)
+          _test_polyline_shapefile("test7", false, false)
         end
 
         def test_test8
-          _test_polyline_shapefile('test8', true, true)
+          _test_polyline_shapefile("test8", true, true)
         end
 
         def test_test9
-          _test_polyline_shapefile('test9', false, true)
+          _test_polyline_shapefile("test9", false, true)
         end
 
         def _test_polygon_shapefile(filename_, has_z_, has_m_)
@@ -373,19 +373,19 @@ module RGeo
         end
 
         def test_test10
-          _test_polygon_shapefile('test10', false, false)
+          _test_polygon_shapefile("test10", false, false)
         end
 
         def test_test11
-          _test_polygon_shapefile('test11', true, true)
+          _test_polygon_shapefile("test11", true, true)
         end
 
         def test_test12
-          _test_polygon_shapefile('test12', false, true)
+          _test_polygon_shapefile("test12", false, true)
         end
 
         def test_test13
-          _open_shapefile('test13') do |file_|
+          _open_shapefile("test13") do |file_|
             assert_equal(31, file_.shape_type_code)
             assert_equal(4, file_.num_records)
             assert_equal(true, file_.factory.property(:has_z_coordinate))

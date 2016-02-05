@@ -1,5 +1,5 @@
-require 'minitest/autorun'
-require 'rgeo/shapefile'
+require "minitest/autorun"
+require "rgeo/shapefile"
 
 module RGeo
   module Shapefile

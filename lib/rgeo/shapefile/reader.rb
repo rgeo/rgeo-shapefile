@@ -1,4 +1,4 @@
-require 'dbf'
+require "dbf"
 
 module RGeo
   module Shapefile
@@ -173,19 +173,19 @@ module RGeo
       # block. You should use Reader::open instead.
 
       def initialize(path_, opts_ = {})  # :nodoc:
-        path_ = path_.sub(/\.shp$/, '')
+        path_ = path_.sub(/\.shp$/, "")
         @base_path = path_
         @opened = true
-        @main_file = ::File.open(path_ + '.shp', 'rb:ascii-8bit')
-        @index_file = ::File.open(path_ + '.shx', 'rb:ascii-8bit')
-        if ::File.file?(path_ + '.dbf') && ::File.readable?(path_ + '.dbf')
-          @attr_dbf = ::DBF::Table.new(path_ + '.dbf')
+        @main_file = ::File.open(path_ + ".shp", "rb:ascii-8bit")
+        @index_file = ::File.open(path_ + ".shx", "rb:ascii-8bit")
+        if ::File.file?(path_ + ".dbf") && ::File.readable?(path_ + ".dbf")
+          @attr_dbf = ::DBF::Table.new(path_ + ".dbf")
         else
           @attr_dbf = nil
         end
-        @main_length, @shape_type_code, @xmin, @ymin, @xmax, @ymax, @zmin, @zmax, @mmin, @mmax = @main_file.read(100).unpack('x24Nx4VE8')
+        @main_length, @shape_type_code, @xmin, @ymin, @xmax, @ymax, @zmin, @zmax, @mmin, @mmax = @main_file.read(100).unpack("x24Nx4VE8")
         @main_length *= 2
-        index_length_ = @index_file.read(100).unpack('x24Nx72').first
+        index_length_ = @index_file.read(100).unpack("x24Nx72").first
         @num_records = (index_length_ - 50) / 4
         @cur_record_index = 0
 
@@ -349,7 +349,7 @@ module RGeo
         if @opened && index_ >= 0 && index_ <= @num_records
           if index_ < @num_records && index_ != @cur_record_index
             @index_file.seek(100 + 8 * index_)
-            offset_ = @index_file.read(4).unpack('N').first
+            offset_ = @index_file.read(4).unpack("N").first
             @main_file.seek(offset_ * 2)
           end
           @cur_record_index = index_
@@ -375,9 +375,9 @@ module RGeo
       alias_method :[], :get
 
       def _read_next_record  # :nodoc:
-        length_ = @main_file.read(8).unpack('NN')[1]
+        length_ = @main_file.read(8).unpack("NN")[1]
         data_ = @main_file.read(length_ * 2)
-        shape_type_ = data_[0, 4].unpack('V').first
+        shape_type_ = data_[0, 4].unpack("V").first
         geometry_ =
           case shape_type_
           when 1 then _read_point(data_)
@@ -411,13 +411,13 @@ module RGeo
       def _read_point(data_, opt_ = nil)  # :nodoc:
         case opt_
         when :z
-          x_, y_, z_, m_ = data_[4, 32].unpack('EEEE')
+          x_, y_, z_, m_ = data_[4, 32].unpack("EEEE")
           m_ = 0 if m_.nil? || m_ < NODATA_LIMIT
         when :m
-          x_, y_, m_ = data_[4, 24].unpack('EEE')
+          x_, y_, m_ = data_[4, 24].unpack("EEE")
           z_ = 0
         else
-          x_, y_ = data_[4, 16].unpack('EE')
+          x_, y_ = data_[4, 16].unpack("EE")
           z_ = m_ = 0
         end
         extras_ = []
@@ -428,13 +428,13 @@ module RGeo
 
       def _read_multipoint(data_, opt_ = nil)  # :nodoc:
         # Read number of points
-        num_points_ = data_[36, 4].unpack('V').first
+        num_points_ = data_[36, 4].unpack("V").first
 
         # Read remaining data
         size_ = num_points_ * 16
         size_ += 16 + num_points_ * 8 if opt_
         size_ += 16 + num_points_ * 8 if opt_ == :z
-        values_ = data_[40, size_].unpack('E*')
+        values_ = data_[40, size_].unpack("E*")
 
         # Extract XY, Z, and M values
         xys_ = values_.slice!(0, num_points_ * 2)
@@ -463,7 +463,7 @@ module RGeo
 
       def _read_polyline(data_, opt_ = nil)  # :nodoc:
         # Read counts
-        num_parts_, num_points_ = data_[36, 8].unpack('VV')
+        num_parts_, num_points_ = data_[36, 8].unpack("VV")
 
         # Read remaining data
         size_ = num_parts_ * 4 + num_points_ * 16
@@ -506,7 +506,7 @@ module RGeo
 
       def _read_polygon(data_, opt_ = nil)  # :nodoc:
         # Read counts
-        num_parts_, num_points_ = data_[36, 8].unpack('VV')
+        num_parts_, num_points_ = data_[36, 8].unpack("VV")
 
         # Read remaining data
         size_ = num_parts_ * 4 + num_points_ * 16
@@ -647,7 +647,7 @@ module RGeo
 
       def _read_multipatch(data_)  # :nodoc:
         # Read counts
-        num_parts_, num_points_ = data_[36, 8].unpack('VV')
+        num_parts_, num_points_ = data_[36, 8].unpack("VV")
 
         # Read remaining data
         values_ = data_[44, 32 + num_parts_ * 8 + num_points_ * 32].unpack("V#{num_parts_ * 2}E*")

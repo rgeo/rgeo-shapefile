@@ -1,4 +1,4 @@
-require 'rgeo'
+require "rgeo"
 
 # RGeo is a spatial data library for Ruby, provided by the "rgeo" gem.
 #
@@ -16,5 +16,5 @@ module RGeo
 end
 
 # Implementation files
-require 'rgeo/shapefile/version'
-require 'rgeo/shapefile/reader'
+require "rgeo/shapefile/version"
+require "rgeo/shapefile/reader"
