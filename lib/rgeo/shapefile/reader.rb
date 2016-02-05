@@ -753,7 +753,7 @@ module RGeo
                     if poly_.contains?(outer_poly_)
                       outer_poly_ = poly_
                       outer_index_ = idx_
-                      break;
+                      break
                     end
                   else
                     outer_poly_ = poly_
