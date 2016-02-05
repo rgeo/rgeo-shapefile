@@ -38,13 +38,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 37
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: SingleLineConditionsOnly.
-Style/ConditionalAssignment:
-  Exclude:
-    - 'lib/rgeo/shapefile/reader.rb'
-
 # Offense count: 3
 Style/Documentation:
   Exclude:
