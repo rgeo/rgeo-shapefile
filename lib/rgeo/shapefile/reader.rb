@@ -208,7 +208,7 @@ module RGeo
         end
 
         @factory = opts_[:factory_generator] || opts_[:factory] || Cartesian.method(:preferred_factory)
-        unless @factory.kind_of?(Feature::Factory::Instance)
+        unless @factory.is_a?(Feature::Factory::Instance)
           factory_config_ = {}
           factory_config_[:srid] = opts_[:srid] if opts_[:srid]
           unless @zmin.nil?
