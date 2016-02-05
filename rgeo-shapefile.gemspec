@@ -8,14 +8,14 @@ Gem::Specification.new do |spec|
   spec.email = ["dazuma@gmail.com", "parhameter@gmail.com"]
   spec.homepage = "http://github.com/rgeo/rgeo-geojson"
   spec.license = "BSD"
-  spec.platform = ::Gem::Platform::RUBY
+  spec.platform = Gem::Platform::RUBY
 
-  spec.files = ::Dir["lib/**/*.rb", "test/**/*.{rb,txt,shp,shx,dbf}", "*.md", "LICENSE.txt"]
-  spec.test_files = ::Dir.glob("test/**/*_test.rb")
+  spec.files = Dir["lib/**/*.rb", "test/**/*.{rb,txt,shp,shx,dbf}", "*.md", "LICENSE.txt"]
+  spec.test_files = Dir.glob("test/**/*_test.rb")
 
   spec.version = RGeo::Shapefile::VERSION
 
-  spec.required_ruby_version = ">= 1.9.3"
+  spec.required_ruby_version = ">= 2.0.0"
 
   spec.add_dependency "rgeo", "~> 0.3"
   spec.add_dependency "dbf", "~> 3.0"
