@@ -389,7 +389,6 @@ module RGeo
           when 25 then _read_polygon(data_, :m)
           when 28 then _read_multipoint(data_, :m)
           when 31 then _read_multipatch(data_)
-          else nil
           end
         attrs_ = {}
         if @attr_dbf
