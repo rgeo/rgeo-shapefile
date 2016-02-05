@@ -263,7 +263,7 @@ module RGeo
       def num_records
         @opened ? @num_records : nil
       end
-      alias_method :size, :num_records
+      alias size num_records
 
       # Returns the shape type code.
 
@@ -370,7 +370,7 @@ module RGeo
       def get(index_)
         seek_index(index_) ? self.next : nil
       end
-      alias_method :[], :get
+      alias [] get
 
       def _read_next_record # :nodoc:
         length_ = @main_file.read(8).unpack("NN")[1]
