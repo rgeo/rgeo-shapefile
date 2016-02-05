@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/rgeo-shapefile.svg)](http://badge.fury.io/rb/rgeo-shapefile)
 [![Build Status](https://travis-ci.org/rgeo/rgeo-shapefile.svg?branch=master)](https://travis-ci.org/rgeo/rgeo-shapefile)
 
-`RGeo::Shapefile` is an optional module for [RGeo](http://github.com/dazuma/rgeo)
+`RGeo::Shapefile` is an optional module for [RGeo](https://github.com/rgeo/rgeo)
 for reading geospatial data from ESRI shapefiles.
 
 ## Summary
@@ -13,7 +13,7 @@ Ruby programming language. At its core is an implementation of the
 industry standard OGC Simple Features Specification, which provides data
 representations of geometric objects such as points, lines, and polygons,
 along with a set of geometric analysis operations. See the README for the
-"rgeo" gem for more information.
+`rgeo` gem for more information.
 
 `RGeo::Shapefile` is an optional RGeo add-on module for reading geospatial
 data from ESRI shapefiles. The shapefile format is a common file format
@@ -42,9 +42,9 @@ end
 
 `RGeo::Shapefile` has the following requirements:
 
-* Ruby 1.9.3 or later preferred.
+* Ruby 2.0.0 or later
 * rgeo 0.3.13 or later.
-* dbf 1.7 or later.
+* dbf 3.0 or later.
 
 Include in your bundle:
 
@@ -55,7 +55,6 @@ gem 'rgeo-shapefile'
 Install `RGeo::Shapefile` as a gem:
 
 ```sh
-gem install rgeo
 gem install rgeo-shapefile
 ```
 
@@ -63,24 +62,21 @@ See the README for the "rgeo" gem, a required dependency, for further installati
 
 If you are using Ruby 1.8, use version `0.2.x` of this gem.
 
-## To-do list
-
-* Improve test case coverage.
-* Support for writing shapefiles.
+If you are using Ruby 1.9, use version `0.3.x` of this gem.
 
 ## Development and support
 
 Documentation is available at http://rdoc.info/gems/rgeo-shapefile
 
-Source code is hosted on Github at http://github.com/rgeo/rgeo-shapefile
+Source code is hosted on Github at https://github.com/rgeo/rgeo-shapefile
 
 Contributions are welcome. Fork the project on Github.
 
-Report bugs on Github issues at http://github.org/rgeo/rgeo-shapefile/issues
+Report bugs on Github issues at https://github.com/rgeo/rgeo-shapefile/issues
 
 ## Acknowledgments
 
-RGeo is written by Daniel Azuma (http://www.daniel-azuma.com).
+`rgeo-shapefile` was orginally written by Daniel Azuma (http://www.daniel-azuma.com).
 
 Development is supported by:
 
@@ -92,8 +88,6 @@ ESRI shapefiles, we did borrow a bunch of their test cases.
 
 ## License
 
-Copyright 2014 Daniel Azuma
-
-Copyright 2014 Tee Parham
+Copyright Daniel Azuma, Tee Parham
 
 https://github.com/rgeo/rgeo-shapefile/blob/master/LICENSE.txt
