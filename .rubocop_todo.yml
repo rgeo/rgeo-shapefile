@@ -129,9 +129,3 @@ Style/SymbolProc:
   Exclude:
     - 'test/shapelib_cases_test.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: MaxLineLength.
-Style/WhileUntilModifier:
-  Exclude:
-    - 'lib/rgeo/shapefile/reader.rb'

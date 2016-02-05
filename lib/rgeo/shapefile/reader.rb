@@ -230,12 +230,11 @@ module RGeo
       # Most methods will return nil.
 
       def close
-        if @opened
-          @main_file.close
-          @index_file.close
-          @attr_dbf.close if @attr_dbf
-          @opened = false
-        end
+        return unless @opened
+        @main_file.close
+        @index_file.close
+        @attr_dbf.close if @attr_dbf
+        @opened = false
       end
 
       # Returns true if this Reader is still open, or false if it has
@@ -338,9 +337,8 @@ module RGeo
       # and yield the Reader::Record for each one.
 
       def each
-        while @cur_record_index < @num_records
-          yield _read_next_record
-        end if @opened
+        return unless @opened
+        yield _read_next_record while @cur_record_index < @num_records
       end
 
       # Seek to the given record index.
