@@ -1,14 +1,8 @@
 require "minitest/autorun"
 require "rgeo/shapefile"
 
-module RGeo
-  module Shapefile
-    module Tests # :nodoc:
-      class BasicTest < ::Minitest::Test # :nodoc:
-        def test_has_version
-          refute_nil(::RGeo::Shapefile::VERSION)
-        end
-      end
-    end
+class BasicTest < Minitest::Test
+  def test_has_version
+    assert RGeo::Shapefile::VERSION.is_a?(String)
   end
 end
