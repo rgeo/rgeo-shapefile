@@ -155,7 +155,7 @@ module RGeo
       # a platform without GEOS, you have no choice but to turn on this
       # switch and make this assumption about your input shapefiles.
 
-      def self.open(path_, opts_={}, &block_)
+      def self.open(path_, opts_ = {}, &block_)
         file_ = new(path_, opts_)
         if block_
           begin
@@ -172,14 +172,14 @@ module RGeo
       # those passed to Reader::open, except that this doesn't take a
       # block. You should use Reader::open instead.
 
-      def initialize(path_, opts_={})  # :nodoc:
+      def initialize(path_, opts_ = {})  # :nodoc:
         path_ = path_.sub(/\.shp$/, '')
         @base_path = path_
         @opened = true
-        @main_file = ::File.open(path_+'.shp', 'rb:ascii-8bit')
-        @index_file = ::File.open(path_+'.shx', 'rb:ascii-8bit')
-        if ::File.file?(path_+'.dbf') && ::File.readable?(path_+'.dbf')
-          @attr_dbf = ::DBF::Table.new(path_+'.dbf')
+        @main_file = ::File.open(path_ + '.shp', 'rb:ascii-8bit')
+        @index_file = ::File.open(path_ + '.shx', 'rb:ascii-8bit')
+        if ::File.file?(path_ + '.dbf') && ::File.readable?(path_ + '.dbf')
+          @attr_dbf = ::DBF::Table.new(path_ + '.dbf')
         else
           @attr_dbf = nil
         end
@@ -348,9 +348,9 @@ module RGeo
       def seek_index(index_)
         if @opened && index_ >= 0 && index_ <= @num_records
           if index_ < @num_records && index_ != @cur_record_index
-            @index_file.seek(100+8*index_)
+            @index_file.seek(100 + 8 * index_)
             offset_ = @index_file.read(4).unpack('N').first
-            @main_file.seek(offset_*2)
+            @main_file.seek(offset_ * 2)
           end
           @cur_record_index = index_
           true
@@ -377,7 +377,7 @@ module RGeo
       def _read_next_record  # :nodoc:
         length_ = @main_file.read(8).unpack('NN')[1]
         data_ = @main_file.read(length_ * 2)
-        shape_type_ = data_[0,4].unpack('V').first
+        shape_type_ = data_[0, 4].unpack('V').first
         geometry_ =
           case shape_type_
           when 1 then _read_point(data_)
@@ -408,16 +408,16 @@ module RGeo
         result_
       end
 
-      def _read_point(data_, opt_=nil)  # :nodoc:
+      def _read_point(data_, opt_ = nil)  # :nodoc:
         case opt_
         when :z
-          x_, y_, z_, m_ = data_[4,32].unpack('EEEE')
+          x_, y_, z_, m_ = data_[4, 32].unpack('EEEE')
           m_ = 0 if m_.nil? || m_ < NODATA_LIMIT
         when :m
-          x_, y_, m_ = data_[4,24].unpack('EEE')
+          x_, y_, m_ = data_[4, 24].unpack('EEE')
           z_ = 0
         else
-          x_, y_ = data_[4,16].unpack('EE')
+          x_, y_ = data_[4, 16].unpack('EE')
           z_ = m_ = 0
         end
         extras_ = []
@@ -426,18 +426,18 @@ module RGeo
         @factory.point(x_, y_, *extras_)
       end
 
-      def _read_multipoint(data_, opt_=nil)  # :nodoc:
+      def _read_multipoint(data_, opt_ = nil)  # :nodoc:
         # Read number of points
-        num_points_ = data_[36,4].unpack('V').first
+        num_points_ = data_[36, 4].unpack('V').first
 
         # Read remaining data
-        size_ = num_points_*16
-        size_ += 16 + num_points_*8 if opt_
-        size_ += 16 + num_points_*8 if opt_ == :z
+        size_ = num_points_ * 16
+        size_ += 16 + num_points_ * 8 if opt_
+        size_ += 16 + num_points_ * 8 if opt_ == :z
         values_ = data_[40, size_].unpack('E*')
 
         # Extract XY, Z, and M values
-        xys_ = values_.slice!(0, num_points_*2)
+        xys_ = values_.slice!(0, num_points_ * 2)
         ms_ = nil
         zs_ = nil
         if opt_
@@ -445,37 +445,37 @@ module RGeo
           if opt_ == :z
             zs_ = ms_
             ms_ = values_.slice!(4, num_points_)
-            ms_.map!{ |val_| val_ < NODATA_LIMIT ? 0 : val_ } if ms_
+            ms_.map! { |val_| val_ < NODATA_LIMIT ? 0 : val_ } if ms_
           end
         end
 
         # Generate points
-        points_ = (0..num_points_-1).map do |i_|
+        points_ = (0..num_points_ - 1).map do |i_|
           extras_ = []
           extras_ << zs_[i_] if zs_ && @factory_supports_z
           extras_ << ms_[i_] if ms_ && @factory_supports_m
-          @factory.point(xys_[i_*2], xys_[i_*2+1], *extras_)
+          @factory.point(xys_[i_ * 2], xys_[i_ * 2 + 1], *extras_)
         end
 
         # Return a MultiPoint
         @factory.multi_point(points_)
       end
 
-      def _read_polyline(data_, opt_=nil)  # :nodoc:
+      def _read_polyline(data_, opt_ = nil)  # :nodoc:
         # Read counts
-        num_parts_, num_points_ = data_[36,8].unpack('VV')
+        num_parts_, num_points_ = data_[36, 8].unpack('VV')
 
         # Read remaining data
-        size_ = num_parts_*4 + num_points_*16
-        size_ += 16 + num_points_*8 if opt_
-        size_ += 16 + num_points_*8 if opt_ == :z
+        size_ = num_parts_ * 4 + num_points_ * 16
+        size_ += 16 + num_points_ * 8 if opt_
+        size_ += 16 + num_points_ * 8 if opt_ == :z
         values_ = data_[44, size_].unpack("V#{num_parts_}E*")
 
         # Parts array
         part_indexes_ = values_.slice!(0, num_parts_) + [num_points_]
 
         # Extract XY, Z, and M values
-        xys_ = values_.slice!(0, num_points_*2)
+        xys_ = values_.slice!(0, num_points_ * 2)
         ms_ = nil
         zs_ = nil
         if opt_
@@ -483,42 +483,42 @@ module RGeo
           if opt_ == :z
             zs_ = ms_
             ms_ = values_.slice!(4, num_points_)
-            ms_.map!{ |val_| val_ < NODATA_LIMIT ? 0 : val_ }
+            ms_.map! { |val_| val_ < NODATA_LIMIT ? 0 : val_ }
           end
         end
 
         # Generate points
-        points_ = (0..num_points_-1).map do |i_|
+        points_ = (0..num_points_ - 1).map do |i_|
           extras_ = []
           extras_ << zs_[i_] if zs_ && @factory_supports_z
           extras_ << ms_[i_] if ms_ && @factory_supports_m
-          @factory.point(xys_[i_*2], xys_[i_*2+1], *extras_)
+          @factory.point(xys_[i_ * 2], xys_[i_ * 2 + 1], *extras_)
         end
 
         # Generate LineString objects (parts)
-        parts_ = (0..num_parts_-1).map do |i_|
-          @factory.line_string(points_[part_indexes_[i_]...part_indexes_[i_+1]])
+        parts_ = (0..num_parts_ - 1).map do |i_|
+          @factory.line_string(points_[part_indexes_[i_]...part_indexes_[i_ + 1]])
         end
 
         # Generate MultiLineString
         @factory.multi_line_string(parts_)
       end
 
-      def _read_polygon(data_, opt_=nil)  # :nodoc:
+      def _read_polygon(data_, opt_ = nil)  # :nodoc:
         # Read counts
-        num_parts_, num_points_ = data_[36,8].unpack('VV')
+        num_parts_, num_points_ = data_[36, 8].unpack('VV')
 
         # Read remaining data
-        size_ = num_parts_*4 + num_points_*16
-        size_ += 16 + num_points_*8 if opt_
-        size_ += 16 + num_points_*8 if opt_ == :z
+        size_ = num_parts_ * 4 + num_points_ * 16
+        size_ += 16 + num_points_ * 8 if opt_
+        size_ += 16 + num_points_ * 8 if opt_ == :z
         values_ = data_[44, size_].unpack("V#{num_parts_}E*")
 
         # Parts array
         part_indexes_ = values_.slice!(0, num_parts_) + [num_points_]
 
         # Extract XY, Z, and M values
-        xys_ = values_.slice!(0, num_points_*2)
+        xys_ = values_.slice!(0, num_points_ * 2)
         ms_ = nil
         zs_ = nil
         if opt_
@@ -526,21 +526,21 @@ module RGeo
           if opt_ == :z
             zs_ = ms_
             ms_ = values_.slice!(4, num_points_)
-            ms_.map!{ |val_| val_ < NODATA_LIMIT ? 0 : val_ } if ms_
+            ms_.map! { |val_| val_ < NODATA_LIMIT ? 0 : val_ } if ms_
           end
         end
 
         # Generate points
-        points_ = (0..num_points_-1).map do |i_|
+        points_ = (0..num_points_ - 1).map do |i_|
           extras_ = []
           extras_ << zs_[i_] if zs_ && @factory_supports_z
           extras_ << ms_[i_] if ms_ && @factory_supports_m
-          @factory.point(xys_[i_*2], xys_[i_*2+1], *extras_)
+          @factory.point(xys_[i_ * 2], xys_[i_ * 2 + 1], *extras_)
         end
 
         # The parts are LinearRing objects
-        parts_ = (0..num_parts_-1).map do |i_|
-          @factory.linear_ring(points_[part_indexes_[i_]...part_indexes_[i_+1]])
+        parts_ = (0..num_parts_ - 1).map do |i_|
+          @factory.linear_ring(points_[part_indexes_[i_]...part_indexes_[i_ + 1]])
         end
 
         # Get a GEOS factory if needed.
@@ -637,7 +637,7 @@ module RGeo
         # Generate the actual polygons from the collected polygon data
         polygons_.map! do |poly_data_|
           outer_ = poly_data_[0][0]
-          inner_ = poly_data_[1..-1].map{ |part_data_| part_data_[0] }
+          inner_ = poly_data_[1..-1].map { |part_data_| part_data_[0] }
           @factory.polygon(outer_, inner_)
         end
 
@@ -647,33 +647,33 @@ module RGeo
 
       def _read_multipatch(data_)  # :nodoc:
         # Read counts
-        num_parts_, num_points_ = data_[36,8].unpack('VV')
+        num_parts_, num_points_ = data_[36, 8].unpack('VV')
 
         # Read remaining data
-        values_ = data_[44, 32 + num_parts_*8 + num_points_*32].unpack("V#{num_parts_*2}E*")
+        values_ = data_[44, 32 + num_parts_ * 8 + num_points_ * 32].unpack("V#{num_parts_ * 2}E*")
 
         # Parts arrays
         part_indexes_ = values_.slice!(0, num_parts_) + [num_points_]
         part_types_ = values_.slice!(0, num_parts_)
 
         # Extract XY, Z, and M values
-        xys_ = values_.slice!(0, num_points_*2)
+        xys_ = values_.slice!(0, num_points_ * 2)
         zs_ = values_.slice!(2, num_points_)
-        zs_.map!{ |val_| val_ < NODATA_LIMIT ? 0 : val_ } if zs_
+        zs_.map! { |val_| val_ < NODATA_LIMIT ? 0 : val_ } if zs_
         ms_ = values_.slice!(4, num_points_)
-        ms_.map!{ |val_| val_ < NODATA_LIMIT ? 0 : val_ } if ms_
+        ms_.map! { |val_| val_ < NODATA_LIMIT ? 0 : val_ } if ms_
 
         # Generate points
-        points_ = (0..num_points_-1).map do |i_|
+        points_ = (0..num_points_ - 1).map do |i_|
           extras_ = []
           extras_ << zs_[i_] if zs_ && @factory_supports_z
           extras_ << ms_[i_] if ms_ && @factory_supports_m
-          @factory.point(xys_[i_*2], xys_[i_*2+1], *extras_)
+          @factory.point(xys_[i_ * 2], xys_[i_ * 2 + 1], *extras_)
         end
 
         # Create the parts
-        parts_ = (0..num_parts_-1).map do |i_|
-          ps_ = points_[part_indexes_[i_]...part_indexes_[i_+1]]
+        parts_ = (0..num_parts_ - 1).map do |i_|
+          ps_ = points_[part_indexes_[i_]...part_indexes_[i_ + 1]]
           # All part types just translate directly into rings, except for
           # triangle fan, which requires that we reorder the vertices.
           if part_types_[i_] == 0
@@ -745,7 +745,7 @@ module RGeo
               # the first ring is the outer one. Otherwise, we have to
               # use GEOS to determine containment.
               unless @assume_inner_follows_outer
-                geos_polygons_ = sequence_.map{ |ring_| geos_factory_.polygon(ring_) }
+                geos_polygons_ = sequence_.map { |ring_| geos_factory_.polygon(ring_) }
                 outer_poly_ = nil
                 outer_index_ = 0
                 geos_polygons_.each_with_index do |poly_, idx_|
