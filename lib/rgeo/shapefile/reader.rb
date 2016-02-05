@@ -531,12 +531,12 @@ module RGeo
           extras_ << zs_[i_] if zs_ && @factory_supports_z
           extras_ << ms_[i_] if ms_ && @factory_supports_m
           @factory.point(xys_[i_ * 2], xys_[i_ * 2 + 1], *extras_)
-        end
+        end.compact
 
         # The parts are LinearRing objects
         parts_ = (0..num_parts_ - 1).map do |i_|
           @factory.linear_ring(points_[part_indexes_[i_]...part_indexes_[i_ + 1]])
-        end
+        end.compact
 
         # Get a GEOS factory if needed.
         geos_factory_ = nil
