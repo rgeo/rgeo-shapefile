@@ -3,8 +3,8 @@ require "rgeo/shapefile"
 
 module RGeo
   module Shapefile
-    module Tests  # :nodoc:
-      class ShapelibCasesTest < ::Minitest::Test  # :nodoc:
+    module Tests # :nodoc:
+      class ShapelibCasesTest < ::Minitest::Test # :nodoc:
         def _open_shapefile(name_, &block_)
           RGeo::Shapefile::Reader.open(::File.expand_path("shapelib_testcases/#{name_}", ::File.dirname(__FILE__)), &block_)
         end

@@ -172,7 +172,7 @@ module RGeo
       # those passed to Reader::open, except that this doesn't take a
       # block. You should use Reader::open instead.
 
-      def initialize(path_, opts_ = {})  # :nodoc:
+      def initialize(path_, opts_ = {}) # :nodoc:
         path_ = path_.sub(/\.shp$/, "")
         @base_path = path_
         @opened = true
@@ -372,7 +372,7 @@ module RGeo
       end
       alias_method :[], :get
 
-      def _read_next_record  # :nodoc:
+      def _read_next_record # :nodoc:
         length_ = @main_file.read(8).unpack("NN")[1]
         data_ = @main_file.read(length_ * 2)
         shape_type_ = data_[0, 4].unpack("V").first
@@ -406,7 +406,7 @@ module RGeo
         result_
       end
 
-      def _read_point(data_, opt_ = nil)  # :nodoc:
+      def _read_point(data_, opt_ = nil) # :nodoc:
         case opt_
         when :z
           x_, y_, z_, m_ = data_[4, 32].unpack("EEEE")
@@ -424,7 +424,7 @@ module RGeo
         @factory.point(x_, y_, *extras_)
       end
 
-      def _read_multipoint(data_, opt_ = nil)  # :nodoc:
+      def _read_multipoint(data_, opt_ = nil) # :nodoc:
         # Read number of points
         num_points_ = data_[36, 4].unpack("V").first
 
@@ -459,7 +459,7 @@ module RGeo
         @factory.multi_point(points_)
       end
 
-      def _read_polyline(data_, opt_ = nil)  # :nodoc:
+      def _read_polyline(data_, opt_ = nil) # :nodoc:
         # Read counts
         num_parts_, num_points_ = data_[36, 8].unpack("VV")
 
@@ -502,7 +502,7 @@ module RGeo
         @factory.multi_line_string(parts_)
       end
 
-      def _read_polygon(data_, opt_ = nil)  # :nodoc:
+      def _read_polygon(data_, opt_ = nil) # :nodoc:
         # Read counts
         num_parts_, num_points_ = data_[36, 8].unpack("VV")
 
@@ -643,7 +643,7 @@ module RGeo
         @factory.multi_polygon(polygons_)
       end
 
-      def _read_multipatch(data_)  # :nodoc:
+      def _read_multipatch(data_) # :nodoc:
         # Read counts
         num_parts_, num_points_ = data_[36, 8].unpack("VV")
 
@@ -794,7 +794,7 @@ module RGeo
       # You should not need to create objects of this type yourself.
 
       class Record
-        def initialize(index_, geometry_, attributes_)  # :nodoc:
+        def initialize(index_, geometry_, attributes_) # :nodoc:
           @index = index_
           @geometry = geometry_
           @attributes = attributes_

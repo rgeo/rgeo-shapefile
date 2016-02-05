@@ -77,15 +77,6 @@ Style/EmptyElse:
   Exclude:
     - 'lib/rgeo/shapefile/reader.rb'
 
-# Offense count: 12
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
-Style/ExtraSpacing:
-  Exclude:
-    - 'lib/rgeo/shapefile/reader.rb'
-    - 'test/basic_test.rb'
-    - 'test/shapelib_cases_test.rb'
-
 # Offense count: 1
 # Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts.
 Style/FileName:
