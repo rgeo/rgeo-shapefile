@@ -1,11 +1,7 @@
 require 'dbf'
 
-
 module RGeo
-
   module Shapefile
-
-
     # Represents a shapefile that is open for reading.
     #
     # You can use this object to read a shapefile straight through,
@@ -94,12 +90,9 @@ module RGeo
     #   a GeometryCollection instead of a MultiPolygon.
 
     class Reader
-
-
       # Values less than this value are considered "no value" in the
       # shapefile format specification.
       NODATA_LIMIT = -1e38
-
 
       # Create a new shapefile reader. You must pass the path for the
       # main shapefile (e.g. "path/to/file.shp"). You may also omit the
@@ -175,7 +168,6 @@ module RGeo
         end
       end
 
-
       # Low-level creation of a Reader. The arguments are the same as
       # those passed to Reader::open, except that this doesn't take a
       # block. You should use Reader::open instead.
@@ -233,7 +225,6 @@ module RGeo
         @assume_inner_follows_outer = opts_[:assume_inner_follows_outer]
       end
 
-
       # Close the shapefile.
       # You should not use this Reader after it has been closed.
       # Most methods will return nil.
@@ -247,14 +238,12 @@ module RGeo
         end
       end
 
-
       # Returns true if this Reader is still open, or false if it has
       # been closed.
 
       def open?
         @opened
       end
-
 
       # Returns true if attributes are available. This may be false
       # because there is no ".dbf" file or because the dbf gem is not
@@ -264,13 +253,11 @@ module RGeo
         @opened ? (@attr_dbf ? true : false) : nil
       end
 
-
       # Returns the factory used by this reader.
 
       def factory
         @opened ? @factory : nil
       end
-
 
       # Returns the number of records in the shapefile.
 
@@ -279,13 +266,11 @@ module RGeo
       end
       alias_method :size, :num_records
 
-
       # Returns the shape type code.
 
       def shape_type_code
         @opened ? @shape_type_code : nil
       end
-
 
       # Returns the minimum x.
 
@@ -293,13 +278,11 @@ module RGeo
         @opened ? @xmin : nil
       end
 
-
       # Returns the maximum x.
 
       def xmax
         @opened ? @xmax : nil
       end
-
 
       # Returns the minimum y.
 
@@ -307,13 +290,11 @@ module RGeo
         @opened ? @ymin : nil
       end
 
-
       # Returns the maximum y.
 
       def ymax
         @opened ? @ymax : nil
       end
-
 
       # Returns the minimum z, or nil if the shapefile does not contain z.
 
@@ -321,13 +302,11 @@ module RGeo
         @opened ? @zmin : nil
       end
 
-
       # Returns the maximum z, or nil if the shapefile does not contain z.
 
       def zmax
         @opened ? @zmax : nil
       end
-
 
       # Returns the minimum m, or nil if the shapefile does not contain m.
 
@@ -335,13 +314,11 @@ module RGeo
         @opened ? @mmin : nil
       end
 
-
       # Returns the maximum m, or nil if the shapefile does not contain m.
 
       def mmax
         @opened ? @mmax : nil
       end
-
 
       # Returns the current file pointer as a record index (0-based).
       # This is the record number that will be read when Reader#next
@@ -351,13 +328,11 @@ module RGeo
         @opened ? @cur_record_index : nil
       end
 
-
       # Read and return the next record as a Reader::Record.
 
       def next
         @opened && @cur_record_index < @num_records ? _read_next_record : nil
       end
-
 
       # Read the remaining records starting with the current record index,
       # and yield the Reader::Record for each one.
@@ -367,7 +342,6 @@ module RGeo
           yield _read_next_record
         end if @opened
       end
-
 
       # Seek to the given record index.
 
@@ -385,14 +359,12 @@ module RGeo
         end
       end
 
-
       # Rewind to the beginning of the file.
       # Equivalent to seek_index(0).
 
       def rewind
         seek_index(0)
       end
-
 
       # Get the given record number. Equivalent to seeking to that index
       # and calling next.
@@ -401,7 +373,6 @@ module RGeo
         seek_index(index_) ? self.next : nil
       end
       alias_method :[], :get
-
 
       def _read_next_record  # :nodoc:
         length_ = @main_file.read(8).unpack('NN')[1]
@@ -437,7 +408,6 @@ module RGeo
         result_
       end
 
-
       def _read_point(data_, opt_=nil)  # :nodoc:
         case opt_
         when :z
@@ -455,7 +425,6 @@ module RGeo
         extras_ << m_ if @factory_supports_m
         @factory.point(x_, y_, *extras_)
       end
-
 
       def _read_multipoint(data_, opt_=nil)  # :nodoc:
         # Read number of points
@@ -491,7 +460,6 @@ module RGeo
         # Return a MultiPoint
         @factory.multi_point(points_)
       end
-
 
       def _read_polyline(data_, opt_=nil)  # :nodoc:
         # Read counts
@@ -535,7 +503,6 @@ module RGeo
         # Generate MultiLineString
         @factory.multi_line_string(parts_)
       end
-
 
       def _read_polygon(data_, opt_=nil)  # :nodoc:
         # Read counts
@@ -677,7 +644,6 @@ module RGeo
         # Finally, return the MultiPolygon.
         @factory.multi_polygon(polygons_)
       end
-
 
       def _read_multipatch(data_)  # :nodoc:
         # Read counts
@@ -822,7 +788,6 @@ module RGeo
         @factory.collection(polygons_)
       end
 
-
       # Shapefile records are provided to the caller as objects of this
       # type. The record includes the record index (0-based), the
       # geometry (which may be nil if the shape type is the null type),
@@ -831,7 +796,6 @@ module RGeo
       # You should not need to create objects of this type yourself.
 
       class Record
-
         def initialize(index_, geometry_, attributes_)  # :nodoc:
           @index = index_
           @geometry = geometry_
@@ -856,13 +820,7 @@ module RGeo
         def [](key_)
           @attributes[key_.to_s]
         end
-
       end
-
-
     end
-
-
   end
-
 end

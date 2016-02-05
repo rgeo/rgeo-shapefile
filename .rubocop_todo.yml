@@ -77,37 +77,6 @@ Style/EmptyElse:
   Exclude:
     - 'lib/rgeo/shapefile/reader.rb'
 
-# Offense count: 65
-# Cop supports --auto-correct.
-Style/EmptyLines:
-  Exclude:
-    - 'lib/rgeo/shapefile.rb'
-    - 'lib/rgeo/shapefile/reader.rb'
-    - 'test/basic_test.rb'
-    - 'test/shapelib_cases_test.rb'
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: empty_lines, no_empty_lines
-Style/EmptyLinesAroundClassBody:
-  Exclude:
-    - 'lib/rgeo/shapefile/reader.rb'
-    - 'test/basic_test.rb'
-    - 'test/shapelib_cases_test.rb'
-
-# Offense count: 14
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: empty_lines, no_empty_lines
-Style/EmptyLinesAroundModuleBody:
-  Exclude:
-    - 'lib/rgeo/shapefile.rb'
-    - 'lib/rgeo/shapefile/reader.rb'
-    - 'lib/rgeo/shapefile/version.rb'
-    - 'test/basic_test.rb'
-    - 'test/shapelib_cases_test.rb'
-
 # Offense count: 12
 # Cop supports --auto-correct.
 # Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
