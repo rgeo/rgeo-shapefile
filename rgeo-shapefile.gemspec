@@ -10,8 +10,7 @@ Gem::Specification.new do |spec|
   spec.license = "BSD"
   spec.platform = Gem::Platform::RUBY
 
-  spec.files = Dir["lib/**/*.rb", "test/**/*.{rb,txt,shp,shx,dbf}", "*.md", "LICENSE.txt"]
-  spec.test_files = Dir.glob("test/**/*_test.rb")
+  spec.files = Dir["lib/**/*.rb", "*.md", "LICENSE.txt"]
 
   spec.version = RGeo::Shapefile::VERSION
 
