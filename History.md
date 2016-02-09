@@ -1,3 +1,12 @@
+### 0.4.1 / 2015-2-8
+
+* Fix homepage in gemspec
+* Do not distribute test files in gem
+
+### 0.4.0 / 2015-2-5
+
+* Require ruby 2.0
+
 ### 0.3.0 / 2014-07-01
 
 * Require ruby 1.9.3+
