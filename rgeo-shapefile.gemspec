@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.description = "RGeo is a geospatial data library for Ruby. RGeo::Shapefile is an optional RGeo module for reading the ESRI shapefile format, a common file format for geospatial datasets."
   spec.authors = ["Daniel Azuma", "Tee Parham"]
   spec.email = ["dazuma@gmail.com", "parhameter@gmail.com"]
-  spec.homepage = "http://github.com/rgeo/rgeo-geojson"
+  spec.homepage = "http://github.com/rgeo/rgeo-shapefile"
   spec.license = "BSD"
   spec.platform = Gem::Platform::RUBY
 
