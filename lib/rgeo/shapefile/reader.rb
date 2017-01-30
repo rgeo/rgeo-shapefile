@@ -173,7 +173,7 @@ module RGeo
       # block. You should use Reader::open instead.
 
       def initialize(path_, opts_ = {}) # :nodoc:
-        path_ = path_.sub(/\.shp$/, "")
+        path_ = path_.to_s.sub(/\.shp$/, "")
         @base_path = path_
         @opened = true
         @main_file = ::File.open(path_ + ".shp", "rb:ascii-8bit")
