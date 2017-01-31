@@ -1,3 +1,8 @@
+### 0.4.2 / 2017-1-31
+
+* Require ruby 2.1
+* Handle non-string path objects in Reader #20
+
 ### 0.4.1 / 2015-2-8
 
 * Fix homepage in gemspec
