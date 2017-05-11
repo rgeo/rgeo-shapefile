@@ -7,8 +7,8 @@ addons:
     - libgeos-dev
     - libproj-dev
 rvm:
-  - 2.4.0
-  - 2.3.3
-  - 2.2.6
+  - 2.4.1
+  - 2.3.4
+  - 2.2.7
   - 2.1
-  - jruby
+  - jruby-9.1.8.0
