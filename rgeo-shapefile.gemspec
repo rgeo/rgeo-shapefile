@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "./lib/rgeo/shapefile/version"
 
 Gem::Specification.new do |spec|

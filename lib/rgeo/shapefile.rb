@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rgeo"
 
 # RGeo is a spatial data library for Ruby, provided by the "rgeo" gem.
