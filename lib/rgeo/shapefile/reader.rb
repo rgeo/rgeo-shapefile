@@ -393,8 +393,8 @@ module RGeo
           when 31 then _read_multipatch(data_)
           end
         attrs_ = {}
-        if @attr_dbf
-          dbf_record_attrs_ = @attr_dbf.record(@cur_record_index).attributes
+        if @attr_dbf && dbf_record_ = @attr_dbf.record(@cur_record_index)
+          dbf_record_attrs_ = dbf_record_.attributes
           @attr_dbf.columns.each do |col_|
             name_ = col_.name
             attrs_[name_] = dbf_record_attrs_[name_]
