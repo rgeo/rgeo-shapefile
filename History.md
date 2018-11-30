@@ -1,7 +1,19 @@
+### 1.1.0 / 2018-11-30
+
+* Allow rgeo 2.0 (#29, sunpoet)
+* Require ruby 2.3+
+
+
+### 1.0.0 / 2018-3-6
+
+* Require rgeo 1.0 (#27)
+* Freeze strings
+
+
 ### 0.4.2 / 2017-1-31
 
-* Require ruby 2.1
-* Handle non-string path objects in Reader #20
+* Require ruby 2.1+
+* Handle non-string path objects in Reader (#20, msimonborg)
 
 ### 0.4.1 / 2015-2-8
 
