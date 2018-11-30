@@ -58,15 +58,19 @@ Install `RGeo::Shapefile` as a gem:
 gem install rgeo-shapefile
 ```
 
-See the README for the "rgeo" gem, a required dependency, for further installation information.
+See the [`rgeo`](https://github.com/rgeo/rgeo) gem, a required dependency,
+for further installation information.
 
-If you are using Ruby 1.8, use version `0.2.x` of this gem.
+If you are using Ruby 2.0-2.2, use version `1.0.x` of this gem.
 
 If you are using Ruby 1.9, use version `0.3.x` of this gem.
 
+If you are using Ruby 1.8, use version `0.2.x` of this gem.
+
+
 ## Development and support
 
-Documentation is available at http://rdoc.info/gems/rgeo-shapefile
+Documentation is available at https://www.rubydoc.info/gems/rgeo-shapefile
 
 Source code is hosted on Github at https://github.com/rgeo/rgeo-shapefile
 
