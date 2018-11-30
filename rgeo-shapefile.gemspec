@@ -10,7 +10,6 @@ Gem::Specification.new do |spec|
   spec.email = ["dazuma@gmail.com", "parhameter@gmail.com"]
   spec.homepage = "http://github.com/rgeo/rgeo-shapefile"
   spec.license = "BSD"
-  spec.platform = Gem::Platform::RUBY
 
   spec.files = Dir["lib/**/*.rb", "*.md", "LICENSE.txt"]
 
