@@ -10,15 +10,14 @@ Gem::Specification.new do |spec|
   spec.email = ["dazuma@gmail.com", "parhameter@gmail.com"]
   spec.homepage = "http://github.com/rgeo/rgeo-shapefile"
   spec.license = "BSD"
-  spec.platform = Gem::Platform::RUBY
 
   spec.files = Dir["lib/**/*.rb", "*.md", "LICENSE.txt"]
 
   spec.version = RGeo::Shapefile::VERSION
 
-  spec.required_ruby_version = ">= 2.1.0"
+  spec.required_ruby_version = ">= 2.3.0"
 
-  spec.add_dependency "rgeo", "~> 1.0"
+  spec.add_dependency "rgeo", ">= 1.0"
   spec.add_dependency "dbf", "~> 3.0"
 
   spec.add_development_dependency "bundler", "~> 1.6"
