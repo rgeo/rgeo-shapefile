@@ -183,6 +183,9 @@ module RGeo
         @attr_dbf = if ::File.file?(path_ + ".dbf") && ::File.readable?(path_ + ".dbf")
                       ::DBF::Table.new(path_ + ".dbf")
                     end
+        @prj_file = if ::File.file?(path_+'.prj') && ::File.readable?(path_ + '.prj')
+                      ::File.open(path_+'.prj', 'rb:ascii-8bit')
+                    end
         @main_length, @shape_type_code, @xmin, @ymin, @xmax, @ymax, @zmin, @zmax, @mmin, @mmax = @main_file.read(100).unpack("x24Nx4VE8")
         @main_length *= 2
         index_length_ = @index_file.read(100).unpack("x24Nx72").first
@@ -234,6 +237,7 @@ module RGeo
         @main_file.close
         @index_file.close
         @attr_dbf.close if @attr_dbf
+        @prj_file.close if @prj_file
         @opened = false
       end
 
@@ -371,6 +375,10 @@ module RGeo
         seek_index(index_) ? self.next : nil
       end
       alias [] get
+
+      def prj
+        @opened && @prj_file ? @prj_file.read : nil
+      end
 
       def _read_next_record # :nodoc:
         length_ = @main_file.read(8).unpack("NN")[1]
