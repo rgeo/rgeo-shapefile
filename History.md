@@ -1,3 +1,8 @@
+### 1.2.0 / 2019-02-21
+
+* Add ability to specify the DBF encoding (#30, rywall)
+
+
 ### 1.1.0 / 2018-11-30
 
 * Allow rgeo 2.0 (#29, sunpoet)
