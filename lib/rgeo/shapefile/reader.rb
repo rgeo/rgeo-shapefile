@@ -181,7 +181,7 @@ module RGeo
         @main_file = ::File.open(path_ + ".shp", "rb:ascii-8bit")
         @index_file = ::File.open(path_ + ".shx", "rb:ascii-8bit")
         @attr_dbf = if ::File.file?(path_ + ".dbf") && ::File.readable?(path_ + ".dbf")
-                      ::DBF::Table.new(path_ + ".dbf")
+                      ::DBF::Table.new(path_ + ".dbf", nil, opts_[:dbf_encoding])
                     end
         @main_length, @shape_type_code, @xmin, @ymin, @xmax, @ymax, @zmin, @zmax, @mmin, @mmax = @main_file.read(100).unpack("x24Nx4VE8")
         @main_length *= 2
