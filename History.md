@@ -1,3 +1,9 @@
+### 2.0.0 / 2019-02-23
+
+* Use .cpg file to specify the DBF encoding (#32, rywall)
+* Remove :dbf_encoding option introduced in 1.2.0
+
+
 ### 1.2.0 / 2019-02-21
 
 * Add ability to specify the DBF encoding (#30, rywall)
