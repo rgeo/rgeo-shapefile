@@ -1,3 +1,8 @@
+### 2.0.1 / 2019-04-01
+
+* Check dbf record attributes / allow DBF file to have fewer records than SHX (#34, womanonrails / #28, marcisv)
+
+
 ### 2.0.0 / 2019-02-23
 
 * Use .cpg file to specify the DBF encoding (#32, rywall)
