@@ -42,9 +42,11 @@ end
 
 `RGeo::Shapefile` has the following requirements:
 
-* Ruby 2.3.0 or later
+* Ruby 2.4.0 or later
 * rgeo 1.0.0 or later.
-* dbf 3.0 or later.
+* dbf 4.0 or later.
+
+If you need support for older Rubies, please use 2.x version  
 
 Include in your bundle:
 
