@@ -1,3 +1,8 @@
+### 3.0.0 / 2020-08-02
+
+* Handle invalid DBF file (#37, rywall)
+* Update DBF gem to version 4.x, bump minimum Ruby version to 2.4 (#38, alvir)
+
 ### 2.0.1 / 2019-04-01
 
 * Check dbf record attributes / allow DBF file to have fewer records than SHX (#34, womanonrails / #28, marcisv)
