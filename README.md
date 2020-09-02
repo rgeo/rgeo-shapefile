@@ -63,6 +63,8 @@ gem install rgeo-shapefile
 See the [`rgeo`](https://github.com/rgeo/rgeo) gem, a required dependency,
 for further installation information.
 
+If you are using Ruby 2.3, use version `2.0.x` of this gem.
+
 If you are using Ruby 2.0-2.2, use version `1.0.x` of this gem.
 
 If you are using Ruby 1.9, use version `0.3.x` of this gem.
