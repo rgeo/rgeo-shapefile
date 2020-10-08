@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Daniel Azuma", "Tee Parham"]
   spec.email = ["dazuma@gmail.com", "parhameter@gmail.com"]
   spec.homepage = "http://github.com/rgeo/rgeo-shapefile"
-  spec.license = "BSD"
+  spec.license = "BSD-3-Clause"
 
   spec.files = Dir["lib/**/*.rb", "*.md", "LICENSE.txt"]
 
