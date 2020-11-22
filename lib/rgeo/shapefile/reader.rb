@@ -92,6 +92,7 @@ module RGeo
     #   a GeometryCollection instead of a MultiPolygon.
 
     class Reader
+      include Enumerable
       # Values less than this value are considered "no value" in the
       # shapefile format specification.
       NODATA_LIMIT = -1e38

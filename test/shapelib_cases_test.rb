@@ -462,6 +462,16 @@ class ShapelibCasesTest < Minitest::Test
     end
   end
 
+  # Test that the reader is enumerable and test that least one method is implemented (each_slice)
+  def test_enumerable
+    _open_shapefile("test") do |file_|
+      assert(file_.class.include?(Enumerable))
+      file_.each_slice(10).each do |slice|
+        assert(slice.count < 11)
+      end
+    end
+  end
+
   private
 
   def _open_shapefile(name_, &block_)
