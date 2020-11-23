@@ -269,6 +269,7 @@ module RGeo
       def num_records
         @opened ? @num_records : nil
       end
+
       alias size num_records
 
       # Returns the shape type code.
@@ -343,8 +344,17 @@ module RGeo
       # and yield the Reader::Record for each one.
 
       def each
-        return unless @opened
-        yield _read_next_record while @cur_record_index < @num_records
+        return to_enum(:each) { @num_records } unless block_given?
+        raise IOError, "File was not open" unless @opened
+        # Each needs to be idempotent, therefore we reset all the internal indexes to their original value
+        current_record_index = @cur_record_index
+        begin
+          rewind
+          yield _read_next_record while @cur_record_index < @num_records
+        ensure
+          seek_index(current_record_index)
+        end
+        self
       end
 
       # Seek to the given record index.
