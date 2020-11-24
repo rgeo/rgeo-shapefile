@@ -1,3 +1,7 @@
+### Current
+
+* Add Enumerable to the Reader (#40, x4d3)
+
 ### 3.0.0 / 2020-08-02
 
 * Handle invalid DBF file (#37, rywall)
