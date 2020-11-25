@@ -1,44 +1,44 @@
 ### Current
 
-* Add Enumerable to the Reader (#40, x4d3)
+* Add Enumerable to the Reader ([#40](https://github.com/rgeo/rgeo-shapefile/pull/40), x4d3)
 
 ### 3.0.0 / 2020-08-02
 
-* Handle invalid DBF file (#37, rywall)
-* Update DBF gem to version 4.x, bump minimum Ruby version to 2.4 (#38, alvir)
+* Handle invalid DBF file ([#37](https://github.com/rgeo/rgeo-shapefile/pull/37), rywall)
+* Update DBF gem to version 4.x, bump minimum Ruby version to 2.4 ([#38](https://github.com/rgeo/rgeo-shapefile/pull/38), alvir)
 
 ### 2.0.1 / 2019-04-01
 
-* Check dbf record attributes / allow DBF file to have fewer records than SHX (#34, womanonrails / #28, marcisv)
+* Check dbf record attributes / allow DBF file to have fewer records than SHX ([#34](https://github.com/rgeo/rgeo-shapefile/pull/34), womanonrails / [#28](https://github.com/rgeo/rgeo-shapefile/pull/28), marcisv)
 
 
 ### 2.0.0 / 2019-02-23
 
-* Use .cpg file to specify the DBF encoding (#32, rywall)
+* Use .cpg file to specify the DBF encoding ([#32](https://github.com/rgeo/rgeo-shapefile/pull/32), rywall)
 * Remove :dbf_encoding option introduced in 1.2.0
 
 
 ### 1.2.0 / 2019-02-21
 
-* Add ability to specify the DBF encoding (#30, rywall)
+* Add ability to specify the DBF encoding ([#30](https://github.com/rgeo/rgeo-shapefile/pull/30), rywall)
 
 
 ### 1.1.0 / 2018-11-30
 
-* Allow rgeo 2.0 (#29, sunpoet)
+* Allow rgeo 2.0 ([#29](https://github.com/rgeo/rgeo-shapefile/pull/29), sunpoet)
 * Require ruby 2.3+
 
 
 ### 1.0.0 / 2018-3-6
 
-* Require rgeo 1.0 (#27)
+* Require rgeo 1.0 ([#27](https://github.com/rgeo/rgeo-shapefile/pull/27))
 * Freeze strings
 
 
 ### 0.4.2 / 2017-1-31
 
 * Require ruby 2.1+
-* Handle non-string path objects in Reader (#20, msimonborg)
+* Handle non-string path objects in Reader ([#20](https://github.com/rgeo/rgeo-shapefile/pull/20), msimonborg)
 
 ### 0.4.1 / 2015-2-8
 
