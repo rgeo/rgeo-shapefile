@@ -462,6 +462,42 @@ class ShapelibCasesTest < Minitest::Test
     end
   end
 
+  # Test that the reader is enumerable
+  def test_enumerable
+    _open_shapefile("test") do |file|
+      # Test that each is idempotent and that the current_index is preserved
+      first = file.next
+      assert_equal(file.first.attributes, first.attributes)
+      assert_equal(first.index, 0)
+      assert_equal(first.attributes["Descriptio"], "Square with triangle missing")
+
+      second = file.next
+      assert_equal(file.take(2).last.attributes, second.attributes)
+      assert_equal(second.index, 1)
+      assert_equal(second.attributes["Descriptio"], "Smaller triangle")
+
+      # check that even if an exception occurred during .each, the current_index is preserved
+      was_caught = false
+      begin
+        file.each do
+          raise "oh no"
+        end
+      rescue StandardError => e
+        assert_equal(e.message, "oh no")
+        was_caught = true
+      end
+      assert(was_caught)
+
+      third = file.next
+      assert_equal(file.to_a[2].attributes, third.attributes)
+      assert_equal(third.index, 2)
+      assert_equal(third.attributes["Descriptio"], "")
+
+      assert_equal(file.each.size, 3)
+      assert(file.class.include?(Enumerable))
+    end
+  end
+
   private
 
   def _open_shapefile(name_, &block_)
