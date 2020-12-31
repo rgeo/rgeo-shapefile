@@ -32,6 +32,8 @@ RGeo::Shapefile::Reader.open('myshpfil.shp') do |file|
     puts "  Geometry: #{record.geometry.as_text}"
     puts "  Attributes: #{record.attributes.inspect}"
   end
+  # If using version 3.0.0 or earlier, rewind is necessary to return to the beginning of the file.
+  # file.rewind
   record = file.next
   puts "First record geometry was: #{record.geometry.as_text}"
 end
