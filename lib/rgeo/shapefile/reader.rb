@@ -496,7 +496,7 @@ module RGeo
           if opt_ == :z
             zs_ = ms_
             ms_ = values_.slice!(4, num_points_)
-            ms_.map! { |val_| val_ < NODATA_LIMIT ? 0 : val_ }
+            ms_.map! { |val_| val_ < NODATA_LIMIT ? 0 : val_ } if ms_
           end
         end
 
