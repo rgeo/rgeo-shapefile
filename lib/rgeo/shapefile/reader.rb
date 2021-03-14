@@ -185,6 +185,7 @@ module RGeo
           if ::File.file?(path_ + ".dbf") && ::File.readable?(path_ + ".dbf")
             if ::File.file?(path_ + ".cpg") && ::File.readable?(path_ + ".cpg")
               dbf_encoding_ = ::File.read(path_ + ".cpg")
+              dbf_encoding_ = Encoding.find(dbf_encoding_.to_s.strip) rescue nil
             end
 
             ::DBF::Table.new(path_ + ".dbf", nil, dbf_encoding_)
