@@ -1,5 +1,7 @@
 ### Current
 
+* Fix issue reading polylines without m values ([#44](https://github.com/rgeo/rgeo-shapefile/pull/44), rywall)
+* Don't pass invalid encodings to DBF ([#43](https://github.com/rgeo/rgeo-shapefile/pull/43), rywall)
 * Add Enumerable to the Reader ([#40](https://github.com/rgeo/rgeo-shapefile/pull/40), x4d3)
 
 ### 3.0.0 / 2020-08-02
