@@ -230,6 +230,7 @@ module RGeo
         @factory_supports_m = @factory.property(:has_m_coordinate)
 
         @assume_inner_follows_outer = opts_[:assume_inner_follows_outer]
+        @reader_opts = opts_
       end
 
       # Close the shapefile.
@@ -625,8 +626,20 @@ module RGeo
                 # The initial guess. It could be -1 if this inner ring
                 # appeared before any outer rings had appeared.
                 first_try_ = part_data_[3]
-                if first_try_ >= 0 && part_data_[2].within?(polygons_[first_try_].first[2])
-                  parent_index_ = first_try_
+                if first_try_ >= 0
+                  begin
+                    if part_data_[2].within?(polygons_[first_try_].first[2])
+                      parent_index_ = first_try_
+                    end
+                  rescue RGeo::Error::InvalidGeometry => invalid_geometry_error
+                    if Array.wrap(@reader_opts[:allow_unsafe_methods]).include?(:within)
+                      if part_data_[2].unsafe_within?(polygons_[first_try_].first[2])
+                        parent_index_ = first_try_
+                      end
+                    else
+                      raise invalid_geometry_error
+                    end
+                  end
                 end
                 # If the initial guess didn't work, go through the
                 # remaining polygons and check their outer rings.
