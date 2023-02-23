@@ -176,6 +176,7 @@ module RGeo
       # block. You should use Reader::open instead.
 
       def initialize(path_, opts_ = {}) # :nodoc:
+        @opts = opts_
         path_ = path_.to_s.sub(/\.shp$/, "")
         @base_path = path_
         @opened = true
@@ -230,7 +231,6 @@ module RGeo
         @factory_supports_m = @factory.property(:has_m_coordinate)
 
         @assume_inner_follows_outer = opts_[:assume_inner_follows_outer]
-        # @reader_opts = opts_
       end
 
       # Close the shapefile.
