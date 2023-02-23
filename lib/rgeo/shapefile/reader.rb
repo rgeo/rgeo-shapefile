@@ -627,6 +627,8 @@ module RGeo
                 # appeared before any outer rings had appeared.
                 first_try_ = part_data_[3]
                 if first_try_ >= 0 && part_data_[2].public_send(@opts_[:allow_unsafe_methods] ? :unsafe_within? : :within?, polygons_[first_try_].first[2])
+                  parent_index_ = first_try_
+                end
                 # If the initial guess didn't work, go through the
                 # remaining polygons and check their outer rings.
                 unless parent_index_
