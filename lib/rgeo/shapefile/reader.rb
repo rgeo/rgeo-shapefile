@@ -633,7 +633,7 @@ module RGeo
                 # remaining polygons and check their outer rings.
                 unless parent_index_
                   polygons_.each_with_index do |poly_data_, index_|
-                    if index_ != first_try_ && part_data_[2].within?(poly_data_.first[2])
+                    if index_ != first_try_ && part_data_[2].public_send(@opts[:allow_unsafe_methods] ? :unsafe_within? : :within?, poly_data_.first[2])
                       parent_index_ = index_
                       break
                     end
