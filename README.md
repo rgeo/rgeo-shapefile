@@ -38,7 +38,15 @@ RGeo::Shapefile::Reader.open('myshpfil.shp') do |file|
   puts "First record geometry was: #{record.geometry.as_text}"
 end
 ```
+### Skipping validity checks
 
+If you have shapefiles that are failing [rgeo validity checks](https://github.com/rgeo/rgeo/blob/main/doc/Geometry-Validity.md) you can skip validity checks by passing `allow_unsafe_methods: true` to the `RGeo::Shapefile::Reader#open` method:
+
+```ruby
+RGeo::Shapefile::Reader.open('myshpfil.shp', allow_unsafe_methods: true) do |file|
+  # ...
+end
+```
 ## Install
 
 `RGeo::Shapefile` has the following requirements:
@@ -47,7 +55,7 @@ end
 * rgeo 1.0.0 or later.
 * dbf 4.0 or later.
 
-If you need support for older Rubies, please use 2.x version  
+If you need support for older Rubies, please use 2.x version
 
 Include in your bundle:
 
