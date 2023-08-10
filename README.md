@@ -40,10 +40,10 @@ end
 ```
 ### Skipping validity checks
 
-If you have shapefiles that are failing [rgeo validity checks](https://github.com/rgeo/rgeo/blob/main/doc/Geometry-Validity.md) you can skip validity checks by passing `allow_unsafe_methods: true` to the `RGeo::Shapefile::Reader#open` method:
+If you have shapefiles that are failing [rgeo validity checks](https://github.com/rgeo/rgeo/blob/main/doc/Geometry-Validity.md) you can skip validity checks by passing `unsafe_methods: true` to the `RGeo::Shapefile::Reader#open` method:
 
 ```ruby
-RGeo::Shapefile::Reader.open('myshpfil.shp', allow_unsafe_methods: true) do |file|
+RGeo::Shapefile::Reader.open('myshpfil.shp', unsafe_methods: true) do |file|
   # ...
 end
 ```
