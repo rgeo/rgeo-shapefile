@@ -6,7 +6,9 @@ require "rgeo/shapefile"
 class UnsafeMethodsTest < Minitest::Test
   def test_unsafe_methods_true
     _open_shapefile("test", true) do |file_|
-      file_.next # Does not raise an error
+      rec_ = file_.next # Does not raise an error
+      refute_nil(rec_.geometry)
+      assert_equal(false, rec_.geometry.valid?)
     end
   end
 
