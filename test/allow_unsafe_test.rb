@@ -3,8 +3,8 @@
 require "minitest/autorun"
 require "rgeo/shapefile"
 
-class UnsafeMethodsTest < Minitest::Test
-  def test_unsafe_methods_true
+class AllowUnsafeTest < Minitest::Test
+  def test_allow_unsafe_true
     _open_shapefile("test", true) do |file_|
       rec_ = file_.next # Does not raise an error
       refute_nil(rec_.geometry)
@@ -12,7 +12,7 @@ class UnsafeMethodsTest < Minitest::Test
     end
   end
 
-  def test_unsafe_methods_false
+  def test_allow_unsafe_false
     _open_shapefile("test", false) do |file_|
       assert_raises(RGeo::Error::InvalidGeometry) { file_.next }
     end
@@ -20,10 +20,10 @@ class UnsafeMethodsTest < Minitest::Test
 
   private
 
-  def _open_shapefile(name_, unsafe_methods_, &block_)
+  def _open_shapefile(name_, allow_unsafe_, &block_)
     RGeo::Shapefile::Reader.open(
       File.expand_path("ring_self_intersection/#{name_}",
-                       File.dirname(__FILE__)), unsafe_methods: unsafe_methods_,
+                       __dir__), allow_unsafe: allow_unsafe_,
       &block_
     )
   end

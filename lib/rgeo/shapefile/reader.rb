@@ -177,11 +177,11 @@ module RGeo
 
       def initialize(path_, opts_ = {}) # :nodoc:
         @allow_unsafe = false
-        if opts_[:unsafe_methods]
+        if opts_[:allow_unsafe]
           if Gem::Version.new(RGeo::VERSION) < Gem::Version.new('3.0.0')
             warn "RGeo v#{RGeo::VERSION} does not support unsafe methods. Unsafe methods were added in RGeo v3.0.0."
           else
-            @allow_unsafe = opts_[:unsafe_methods]
+            @allow_unsafe = opts_[:allow_unsafe]
           end
         end
         path_ = path_.to_s.sub(/\.shp$/, "")
