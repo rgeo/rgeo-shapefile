@@ -1,9 +1,59 @@
 inherit_from: .rubocop_todo.yml
 
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: enable
+
 Layout/ParameterAlignment:
   Enabled: false
 
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/LineContinuationLeadingSpace:
+  Enabled: false
+
 Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: false # `1 * 3 + 2 * 2` is not that ambiguous!
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/MethodParameterName:
+  AllowedNames:
+    - x
+    - y
+    - z
+    - m
+
+Naming/PredicateName:
+  AllowedMethods:
+    - is_a?
+    - has_projection? # Helps disambiguating.
+
+Style/CaseEquality:
+  Enabled: false
+
+Style/GlobalVars:
+  Exclude:
+    - 'ext/geos_c_impl/extconf.rb'
+
+Style/NumericPredicate:
   Enabled: false
 
 Style/SignalException:
@@ -11,3 +61,10 @@ Style/SignalException:
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Style/ZeroLengthPredicate:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Max: 8
+  MaxOptionalParameters: 6
