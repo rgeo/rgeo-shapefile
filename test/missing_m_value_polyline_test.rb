@@ -8,7 +8,7 @@ class MissingMValuePolylineTest < Minitest::Test
     _open_shapefile("test") do |file_|
       rec_ = file_.next
       refute_nil(rec_.geometry)
-      assert_equal('FL461', rec_['Full_name'])
+      assert_equal("FL461", rec_["Full_name"])
     end
   end
 
