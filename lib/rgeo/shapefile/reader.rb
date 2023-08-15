@@ -176,6 +176,14 @@ module RGeo
       # block. You should use Reader::open instead.
 
       def initialize(path_, opts_ = {}) # :nodoc:
+        @allow_unsafe = false
+        if opts_[:allow_unsafe]
+          if Gem::Version.new(RGeo::VERSION) < Gem::Version.new("3.0.0")
+            warn "RGeo v#{RGeo::VERSION} does not support unsafe methods. Unsafe methods were added in RGeo v3.0.0."
+          else
+            @allow_unsafe = opts_[:allow_unsafe]
+          end
+        end
         path_ = path_.to_s.sub(/\.shp$/, "")
         @base_path = path_
         @opened = true
@@ -625,14 +633,14 @@ module RGeo
                 # The initial guess. It could be -1 if this inner ring
                 # appeared before any outer rings had appeared.
                 first_try_ = part_data_[3]
-                if first_try_ >= 0 && part_data_[2].within?(polygons_[first_try_].first[2])
+                if first_try_ >= 0 && part_data_[2].public_send(@allow_unsafe ? :unsafe_within? : :within?, polygons_[first_try_].first[2])
                   parent_index_ = first_try_
                 end
                 # If the initial guess didn't work, go through the
                 # remaining polygons and check their outer rings.
                 unless parent_index_
                   polygons_.each_with_index do |poly_data_, index_|
-                    if index_ != first_try_ && part_data_[2].within?(poly_data_.first[2])
+                    if index_ != first_try_ && part_data_[2].public_send(@allow_unsafe ? :unsafe_within? : :within?, poly_data_.first[2])
                       parent_index_ = index_
                       break
                     end
@@ -764,7 +772,7 @@ module RGeo
                 outer_index_ = 0
                 geos_polygons_.each_with_index do |poly_, idx_|
                   if outer_poly_
-                    if poly_.contains?(outer_poly_)
+                    if poly_.public_send(@allow_unsafe ? :unsafe_contains? : :contains?, outer_poly_)
                       outer_poly_ = poly_
                       outer_index_ = idx_
                       break
