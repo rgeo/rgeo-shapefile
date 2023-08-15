@@ -10,6 +10,7 @@ Gem::Specification.new do |spec|
   spec.email = ["dazuma@gmail.com", "parhameter@gmail.com"]
   spec.homepage = "http://github.com/rgeo/rgeo-shapefile"
   spec.license = "BSD-3-Clause"
+  spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.files = Dir["lib/**/*.rb", "*.md", "LICENSE.txt"]
 
@@ -22,5 +23,4 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "minitest", "~> 5.3"
   spec.add_development_dependency "rake", "~> 12.0"
-  spec.metadata["rubygems_mfa_required"] = "true"
 end
