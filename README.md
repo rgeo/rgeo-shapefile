@@ -1,7 +1,7 @@
 # RGeo::Shapefile
 
 [![Gem Version](https://badge.fury.io/rb/rgeo-shapefile.svg)](http://badge.fury.io/rb/rgeo-shapefile)
-[![Build Status](https://travis-ci.org/rgeo/rgeo-shapefile.svg?branch=master)](https://travis-ci.org/rgeo/rgeo-shapefile)
+[![CI](https://github.com/rgeo/rgeo-shapefile/workflows/CI/badge.svg)](https://github.com/rgeo/rgeo-shapefile/actions?query=workflow%3ACI+branch%3Amaster+event%3Apush)
 
 `RGeo::Shapefile` is an optional module for [RGeo](https://github.com/rgeo/rgeo)
 for reading geospatial data from ESRI shapefiles.
@@ -38,7 +38,15 @@ RGeo::Shapefile::Reader.open('myshpfil.shp') do |file|
   puts "First record geometry was: #{record.geometry.as_text}"
 end
 ```
+### Skipping validity checks
 
+If you have shapefiles that are failing [rgeo validity checks](https://github.com/rgeo/rgeo/blob/main/doc/Geometry-Validity.md) you can skip validity checks by passing `allow_unsafe: true` to the `RGeo::Shapefile::Reader#open` method:
+
+```ruby
+RGeo::Shapefile::Reader.open('myshpfil.shp', allow_unsafe: true) do |file|
+  # ...
+end
+```
 ## Install
 
 `RGeo::Shapefile` has the following requirements:
@@ -47,7 +55,7 @@ end
 * rgeo 1.0.0 or later.
 * dbf 4.0 or later.
 
-If you need support for older Rubies, please use 2.x version  
+If you need support for older Rubies, please use 2.x version
 
 Include in your bundle:
 
