@@ -22,8 +22,7 @@ class AllowUnsafeTest < Minitest::Test
 
   def _open_shapefile(name_, allow_unsafe_, &block_)
     RGeo::Shapefile::Reader.open(
-      File.expand_path("ring_self_intersection/#{name_}",
-                       __dir__), allow_unsafe: allow_unsafe_,
+      File.expand_path("ring_self_intersection/#{name_}", __dir__), allow_unsafe: allow_unsafe_,
       &block_
     )
   end

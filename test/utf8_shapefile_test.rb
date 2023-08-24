@@ -15,8 +15,7 @@ class Utf8ShapefileTest < Minitest::Test
 
   def _open_shapefile(&block_)
     RGeo::Shapefile::Reader.open(
-      File.expand_path("utf8_shapefile/utf8",
-      File.dirname(__FILE__)),
+      File.expand_path("utf8_shapefile/utf8", __dir__),
       &block_
     )
   end

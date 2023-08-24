@@ -16,8 +16,7 @@ class InvalidCpgEncodingTest < Minitest::Test
 
   def _open_shapefile(name_, &block_)
     RGeo::Shapefile::Reader.open(
-      File.expand_path("invalid_cpg_encoding/#{name_}",
-                       File.dirname(__FILE__)),
+      File.expand_path("invalid_cpg_encoding/#{name_}", __dir__),
       &block_
     )
   end

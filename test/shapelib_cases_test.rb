@@ -506,8 +506,7 @@ class ShapelibCasesTest < Minitest::Test
 
   def _open_shapefile(name_, &block_)
     RGeo::Shapefile::Reader.open(
-      File.expand_path("shapelib_testcases/#{name_}",
-      File.dirname(__FILE__)),
+      File.expand_path("shapelib_testcases/#{name_}", __dir__),
       &block_
     )
   end
