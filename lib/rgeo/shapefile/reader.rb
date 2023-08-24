@@ -637,14 +637,16 @@ module RGeo
                 # The initial guess. It could be -1 if this inner ring
                 # appeared before any outer rings had appeared.
                 first_try_ = part_data_[3]
-                if first_try_ >= 0 && part_data_[2].public_send(@allow_unsafe ? :unsafe_within? : :within?, polygons_[first_try_].first[2])
+
+                within_method_ = @allow_unsafe ? :unsafe_within? : :within?
+                if first_try_ >= 0 && part_data_[2].public_send(within_method_, polygons_[first_try_].first[2])
                   parent_index_ = first_try_
                 end
                 # If the initial guess didn't work, go through the
                 # remaining polygons and check their outer rings.
                 unless parent_index_
                   polygons_.each_with_index do |poly_data_, index_|
-                    if index_ != first_try_ && part_data_[2].public_send(@allow_unsafe ? :unsafe_within? : :within?, poly_data_.first[2])
+                    if index_ != first_try_ && part_data_[2].public_send(within_method_, poly_data_.first[2])
                       parent_index_ = index_
                       break
                     end
@@ -774,9 +776,10 @@ module RGeo
                 geos_polygons_ = sequence_.map { |ring_| geos_factory_.polygon(ring_) }
                 outer_poly_ = nil
                 outer_index_ = 0
+                contains_method_ = @allow_unsafe ? :unsafe_contains? : :contains?
                 geos_polygons_.each_with_index do |poly_, idx_|
                   if outer_poly_
-                    if poly_.public_send(@allow_unsafe ? :unsafe_contains? : :contains?, outer_poly_)
+                    if poly_.public_send(contains_method_, outer_poly_)
                       outer_poly_ = poly_
                       outer_index_ = idx_
                       break
