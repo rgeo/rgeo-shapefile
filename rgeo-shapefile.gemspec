@@ -22,5 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dbf", "~> 4.0"
 
   spec.add_development_dependency "minitest", "~> 5.3"
+  spec.add_development_dependency "rubocop", "~> 1.36.0"
   spec.add_development_dependency "rake", "~> 12.0"
 end
