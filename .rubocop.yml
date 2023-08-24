@@ -49,10 +49,6 @@ Naming/PredicateName:
 Style/CaseEquality:
   Enabled: false
 
-Style/GlobalVars:
-  Exclude:
-    - 'ext/geos_c_impl/extconf.rb'
-
 Style/NumericPredicate:
   Enabled: false
 
