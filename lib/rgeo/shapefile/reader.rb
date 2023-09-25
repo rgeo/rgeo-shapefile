@@ -187,16 +187,20 @@ module RGeo
         path_ = path_.to_s.sub(/\.shp$/, "")
         @base_path = path_
         @opened = true
-        @main_file = ::File.open(path_ + ".shp", "rb:ascii-8bit")
-        @index_file = ::File.open(path_ + ".shx", "rb:ascii-8bit")
+        @main_file = ::File.open("#{path_}.shp", "rb:ascii-8bit")
+        @index_file = ::File.open("#{path_}.shx", "rb:ascii-8bit")
         @attr_dbf =
-          if ::File.file?(path_ + ".dbf") && ::File.readable?(path_ + ".dbf")
-            if ::File.file?(path_ + ".cpg") && ::File.readable?(path_ + ".cpg")
-              dbf_encoding_ = ::File.read(path_ + ".cpg")
-              dbf_encoding_ = Encoding.find(dbf_encoding_.to_s.strip) rescue nil
+          if ::File.file?("#{path_}.dbf") && ::File.readable?("#{path_}.dbf")
+            if ::File.file?("#{path_}.cpg") && ::File.readable?("#{path_}.cpg")
+              dbf_encoding_ = ::File.read("#{path_}.cpg")
+              dbf_encoding_ = begin
+                Encoding.find(dbf_encoding_.to_s.strip)
+              rescue StandardError
+                nil
+              end
             end
 
-            ::DBF::Table.new(path_ + ".dbf", nil, dbf_encoding_)
+            ::DBF::Table.new("#{path_}.dbf", nil, dbf_encoding_)
           end
         @main_length, @shape_type_code, @xmin, @ymin, @xmax, @ymax, @zmin, @zmax, @mmin, @mmax = @main_file.read(100).unpack("x24Nx4VE8")
         @main_length *= 2
@@ -633,14 +637,16 @@ module RGeo
                 # The initial guess. It could be -1 if this inner ring
                 # appeared before any outer rings had appeared.
                 first_try_ = part_data_[3]
-                if first_try_ >= 0 && part_data_[2].public_send(@allow_unsafe ? :unsafe_within? : :within?, polygons_[first_try_].first[2])
+
+                within_method_ = @allow_unsafe ? :unsafe_within? : :within?
+                if first_try_ >= 0 && part_data_[2].public_send(within_method_, polygons_[first_try_].first[2])
                   parent_index_ = first_try_
                 end
                 # If the initial guess didn't work, go through the
                 # remaining polygons and check their outer rings.
                 unless parent_index_
                   polygons_.each_with_index do |poly_data_, index_|
-                    if index_ != first_try_ && part_data_[2].public_send(@allow_unsafe ? :unsafe_within? : :within?, poly_data_.first[2])
+                    if index_ != first_try_ && part_data_[2].public_send(within_method_, poly_data_.first[2])
                       parent_index_ = index_
                       break
                     end
@@ -659,7 +665,7 @@ module RGeo
         # Generate the actual polygons from the collected polygon data
         polygons_.map! do |poly_data_|
           outer_ = poly_data_[0][0]
-          inner_ = poly_data_[1..-1].map { |part_data_| part_data_[0] }
+          inner_ = poly_data_[1..].map { |part_data_| part_data_[0] }
           @factory.polygon(outer_, inner_)
         end
 
@@ -750,7 +756,7 @@ module RGeo
             else
               # End of an outer-led sequence.
               # Add the polygon and reset the state.
-              polygons_ << @factory.polygon(sequence_[0], sequence_[1..-1])
+              polygons_ << @factory.polygon(sequence_[0], sequence_[1..])
               state_ = :empty
               sequence_ = []
             end
@@ -770,9 +776,10 @@ module RGeo
                 geos_polygons_ = sequence_.map { |ring_| geos_factory_.polygon(ring_) }
                 outer_poly_ = nil
                 outer_index_ = 0
+                contains_method_ = @allow_unsafe ? :unsafe_contains? : :contains?
                 geos_polygons_.each_with_index do |poly_, idx_|
                   if outer_poly_
-                    if poly_.public_send(@allow_unsafe ? :unsafe_contains? : :contains?, outer_poly_)
+                    if poly_.public_send(contains_method_, outer_poly_)
                       outer_poly_ = poly_
                       outer_index_ = idx_
                       break
@@ -784,7 +791,7 @@ module RGeo
                 sequence_.slice!(outer_index_)
                 sequence_.unshift(outer_poly_)
               end
-              polygons_ << @factory.polygon(sequence_[0], sequence_[1..-1])
+              polygons_ << @factory.polygon(sequence_[0], sequence_[1..])
               state_ = :empty
               sequence_ = []
             end

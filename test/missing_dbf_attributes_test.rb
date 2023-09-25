@@ -21,8 +21,7 @@ class MissingDbfAttributesTest < Minitest::Test
 
   def _open_shapefile(name_, &block_)
     RGeo::Shapefile::Reader.open(
-      File.expand_path("missing_dbf_attributes/#{name_}",
-      File.dirname(__FILE__)),
+      File.expand_path("missing_dbf_attributes/#{name_}", __dir__),
       &block_
     )
   end

@@ -479,9 +479,13 @@ class ShapelibCasesTest < Minitest::Test
       # check that even if an exception occurred during .each, the current_index is preserved
       was_caught = false
       begin
+        # Disable this cop because we're explicitly checking raising from .each
+        # It does not matter that this only has one iteration.
+        # rubocop:disable Lint/UnreachableLoop
         file.each do
           raise "oh no"
         end
+        # rubocop:enable Lint/UnreachableLoop
       rescue StandardError => e
         assert_equal(e.message, "oh no")
         was_caught = true
@@ -502,8 +506,7 @@ class ShapelibCasesTest < Minitest::Test
 
   def _open_shapefile(name_, &block_)
     RGeo::Shapefile::Reader.open(
-      File.expand_path("shapelib_testcases/#{name_}",
-      File.dirname(__FILE__)),
+      File.expand_path("shapelib_testcases/#{name_}", __dir__),
       &block_
     )
   end
