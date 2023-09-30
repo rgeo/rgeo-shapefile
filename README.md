@@ -1,7 +1,7 @@
 # RGeo::Shapefile
 
 [![Gem Version](https://badge.fury.io/rb/rgeo-shapefile.svg)](http://badge.fury.io/rb/rgeo-shapefile)
-[![CI](https://github.com/rgeo/rgeo-shapefile/workflows/CI/badge.svg)](https://github.com/rgeo/rgeo-shapefile/actions?query=workflow%3ACI+branch%3Amaster+event%3Apush)
+[![CI](https://github.com/rgeo/rgeo-shapefile/workflows/CI/badge.svg)](https://github.com/rgeo/rgeo-shapefile/actions?query=workflow%3ACI+branch%3Amain+event%3Apush)
 
 `RGeo::Shapefile` is an optional module for [RGeo](https://github.com/rgeo/rgeo)
 for reading geospatial data from ESRI shapefiles.
@@ -107,4 +107,4 @@ ESRI shapefiles, we did borrow a bunch of their test cases.
 
 Copyright Daniel Azuma, Tee Parham
 
-https://github.com/rgeo/rgeo-shapefile/blob/master/LICENSE.txt
+https://github.com/rgeo/rgeo-shapefile/blob/main/LICENSE.txt
