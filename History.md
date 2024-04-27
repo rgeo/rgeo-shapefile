@@ -1,5 +1,7 @@
 ### Current
 
+* Update DBF gem to allow version 5.0 ([#53](https://github.com/rgeo/rgeo-shapefile/pull/53), ilvez)
+
 ### 3.1.0 / 2023-09-30
 
 * Rubocop updates and execution ([#51](https://github.com/rgeo/rgeo-shapefile/pull/51), ObiWanKeoni)
